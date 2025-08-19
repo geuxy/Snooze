@@ -24,7 +24,6 @@ public interface ClickGuiTheme {
     void renderRange(DrawContext context, RangeElement element, double mouseX, double mouseY);
     void renderSlider(DrawContext context, SliderElement element, double mouseX, double mouseY);
     void renderToggle(DrawContext context, ToggleElement element, double mouseX, double mouseY);
-
     void renderOption(DrawContext context, OptionElement element, double mouseX, double mouseY);
 
 }

@@ -1,7 +1,5 @@
 package gg.snooze.module.impl;
 
-import gg.snooze.core.Snooze;
-import gg.snooze.event.impl.MovementPacketEvent;
 import gg.snooze.module.Module;
 import gg.snooze.module.info.ModuleData;
 import gg.snooze.module.info.ModuleType;
@@ -21,7 +19,7 @@ import java.util.Map;
         type = ModuleType.MOVEMENT,
         keyCode = GLFW.GLFW_KEY_R
 )
-public class TestModule extends Module  {
+public class TestModule extends Module {
 
     private final ModeProperty<TestMode> modeProperty = PropertyFactory.<TestMode>mode()
         .metadata(new PropertyMetadata("Mode", "Single selection"))

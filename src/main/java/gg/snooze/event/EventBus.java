@@ -7,7 +7,8 @@ public class EventBus {
     private final Object[] data;
     private final int[] listenerCounts;
 
-    private final int maxEvents, maxListeners;
+    private final int maxEvents;
+    private final int maxListeners;
 
     public EventBus(int maxEvents, int maxListeners) {
         this.maxEvents = maxEvents;
@@ -17,7 +18,7 @@ public class EventBus {
         this.listenerCounts = new int[maxListeners];
     }
 
-    public void subscribe(int eventId, Object listener) {
+    public <T extends AbstractEvent> void subscribe(int eventId, Listener<T> listener) {
         int count = listenerCounts[eventId];
         int index = eventId * maxListeners + count;
 
@@ -25,7 +26,7 @@ public class EventBus {
         this.listenerCounts[eventId] = count + 1;
     }
 
-    public void unsubscribe(int eventId, Object listener) {
+    public <T extends AbstractEvent> void unsubscribe(int eventId, Listener<T> listener) {
         int count = this.listenerCounts[eventId];
         int baseIndex = eventId * maxListeners;
 
@@ -44,12 +45,12 @@ public class EventBus {
     }
 
     @SuppressWarnings("unchecked")
-    public void postUnsafe(int eventId, AbstractEvent event) {
+    public <T extends AbstractEvent> void postUnsafe(int eventId, T event) {
         int count = this.listenerCounts[eventId];
         int baseIndex = eventId * maxListeners;
 
         for (int i = 0; i < count; i++) {
-            event.call(data[baseIndex + i]);
+            ((Listener<T>) data[baseIndex + i]).onEvent(event);
         }
     }
 

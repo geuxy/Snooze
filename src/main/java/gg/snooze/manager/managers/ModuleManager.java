@@ -1,6 +1,7 @@
 package gg.snooze.manager.managers;
 
 import gg.snooze.core.Snooze;
+import gg.snooze.event.Listener;
 import gg.snooze.event.impl.KeyPressedEvent;
 import gg.snooze.manager.MapManager;
 import gg.snooze.module.Module;
@@ -26,20 +27,20 @@ public class ModuleManager extends MapManager<Class<? extends Module>, Module> {
 
         this.addingModule = null;
 
-        //Snooze.INSTANCE.eventBus().subscribe(KeyPressedEvent.ID, onKeyPressed);
+        Snooze.INSTANCE.eventBus().subscribe(KeyPressedEvent.ID, onKeyPressed);
     }
 
     public void stop() {
 
     }
 
-    /*private final Listener<KeyPressedEvent> onKeyPressed = event -> {
+    private final Listener<KeyPressedEvent> onKeyPressed = event -> {
         for(Module module : this) {
             if(event.getKeyCode() == module.getConfig().getKeyCode()) {
                 module.setEnabled(!module.getConfig().isEnabled());
             }
         }
-    };*/
+    };
 
     @SafeVarargs
     public final void putModules(Class<? extends Module>... classes) {

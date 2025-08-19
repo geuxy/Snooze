@@ -11,7 +11,4 @@ public class KeyPressedEvent extends AbstractEvent {
 
     private final int keyCode, action;
 
-    @Override
-    public void call(Object listener) {
-    }
 }

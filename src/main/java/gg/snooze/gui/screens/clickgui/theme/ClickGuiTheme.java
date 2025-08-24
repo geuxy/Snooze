@@ -1,6 +1,6 @@
 package gg.snooze.gui.screens.clickgui.theme;
 
-import gg.snooze.gui.elements.UIElement;
+import gg.snooze.gui.framework.UIElement;
 import gg.snooze.gui.screens.clickgui.elements.CategoryElement;
 import gg.snooze.gui.screens.clickgui.elements.ModuleElement;
 import gg.snooze.gui.screens.clickgui.elements.properties.*;

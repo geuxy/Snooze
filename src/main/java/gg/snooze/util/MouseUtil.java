@@ -1,6 +1,6 @@
 package gg.snooze.util;
 
-import gg.snooze.gui.elements.UIElement;
+import gg.snooze.gui.framework.UIElement;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

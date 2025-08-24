@@ -1,8 +1,8 @@
 package gg.snooze.gui.screens.clickgui.clickguis.dropdown;
 
 import gg.snooze.core.Snooze;
-import gg.snooze.gui.elements.UIDragElement;
-import gg.snooze.gui.elements.UIElement;
+import gg.snooze.gui.framework.UIDragElement;
+import gg.snooze.gui.framework.UIElement;
 import gg.snooze.gui.screens.clickgui.elements.CategoryElement;
 import gg.snooze.gui.screens.clickgui.elements.ModuleElement;
 import gg.snooze.gui.screens.clickgui.theme.ClickGuiTheme;

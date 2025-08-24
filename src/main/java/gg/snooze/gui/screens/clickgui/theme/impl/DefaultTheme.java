@@ -1,18 +1,15 @@
 package gg.snooze.gui.screens.clickgui.theme.impl;
 
-import gg.snooze.gui.elements.UIElement;
+import gg.snooze.gui.framework.UIElement;
 import gg.snooze.gui.screens.clickgui.elements.CategoryElement;
 import gg.snooze.gui.screens.clickgui.elements.ModuleElement;
-import gg.snooze.gui.screens.clickgui.elements.PropertyElement;
 import gg.snooze.gui.screens.clickgui.elements.properties.*;
 import gg.snooze.gui.screens.clickgui.elements.properties.sub.OptionElement;
 import gg.snooze.gui.screens.clickgui.theme.ClickGuiTheme;
-import gg.snooze.property.Property;
 import gg.snooze.util.INameable;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
 
 import java.awt.*;
 

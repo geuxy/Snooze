@@ -1,6 +1,6 @@
 package gg.snooze.gui.screens.clickgui.elements;
 
-import gg.snooze.gui.elements.UIElement;
+import gg.snooze.gui.framework.UIElement;
 import gg.snooze.property.Property;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

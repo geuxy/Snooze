@@ -1,4 +1,4 @@
-package gg.snooze.gui.elements;
+package gg.snooze.gui.framework;
 
 import lombok.Getter;
 import lombok.Setter;

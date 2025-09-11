@@ -1,7 +1,7 @@
 package gg.snooze.core;
 
-import gg.snooze.event.EventBus;
-import gg.snooze.manager.managers.ModuleManager;
+import gg.snooze.systems.event.EventBus;
+import gg.snooze.core.manager.managers.ModuleManager;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.slf4j.Logger;

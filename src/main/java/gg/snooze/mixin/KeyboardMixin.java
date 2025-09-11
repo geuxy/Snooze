@@ -1,7 +1,7 @@
 package gg.snooze.mixin;
 
 import gg.snooze.core.Snooze;
-import gg.snooze.event.impl.KeyPressedEvent;
+import gg.snooze.systems.event.events.KeyPressedEvent;
 import net.minecraft.client.Keyboard;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

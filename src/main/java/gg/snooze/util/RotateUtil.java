@@ -21,23 +21,24 @@ public class RotateUtil {
         return new Vec2f(yaw, pitch);
     }
 
-    public Vec2f applySensitivity(Vec2f rotations, Vec2f lastRotations) {
+    public Vec2f applySensitivity(Vec2f currentRots, Vec2f previousRots) {
         MinecraftClient client = MinecraftClient.getInstance();
+        double mouseSens = client.options.getMouseSensitivity().getValue();
 
-        double sens = client.options.getMouseSensitivity().getValue() * (double)0.6F + (double)0.2F;
-        double step = sens * sens * sens;
-        double gcd = step * (double)8.0F;
+        double sens = mouseSens * (double) 0.6F + (double) 0.2F;
+        double gcd = (sens * sens * sens) * (double) 8.0F;
 
-        double cursorDeltaX = ((((rotations.x - lastRotations.x) % 360F) + 540) % 360) - 180;
-        double cursorDeltaY = rotations.y - lastRotations.y;
+        double cursorDeltaX = wrap(currentRots.x - previousRots.x);
+        double cursorDeltaY = currentRots.y - previousRots.y;
 
-        double fixedDeltaX = cursorDeltaX * gcd;
-        double fixedDeltaY = cursorDeltaY * gcd;
+        float fixedDeltaYaw = (float) (cursorDeltaX * gcd) * 0.15F;
+        float fixedDeltaPitch = (float) (cursorDeltaY * gcd) * 0.15F;
 
-        float g = (float)fixedDeltaX * 0.15F;
-        float h = (float)fixedDeltaY * 0.15F;
+        return new Vec2f(previousRots.x + fixedDeltaYaw, previousRots.y + fixedDeltaPitch);
+    }
 
-        return new Vec2f(lastRotations.x + g, lastRotations.y + h);
+    public float wrap(float yaw) {
+        return (((yaw % 360F) + 540) % 360) - 180;
     }
 
 }

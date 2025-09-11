@@ -2,4 +2,4 @@
 A fabric cheat because yes
 
 ### Screenshots
-[DropClickGui](./images/clickgui-example.png)
+![DropClickGui](./images/clickgui-example.png)

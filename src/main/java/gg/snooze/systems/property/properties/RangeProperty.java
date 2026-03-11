@@ -16,13 +16,13 @@ public final class RangeProperty extends Property<RangeProperty> {
     private final double minimum, maximum, increment;
     private double minValue, maxValue;
 
-    public RangeProperty(PropertyMetadata metadata, PropertyOwner owner, double value, double endValue, double minimum, double maximum, double increment) {
+    public RangeProperty(PropertyMetadata metadata, PropertyOwner owner, double minimum, double maximum, double increment) {
         super(metadata, owner);
         this.minimum = minimum;
         this.maximum = maximum;
         this.increment = Math.clamp(increment, MIN_INCREMENT, maximum - minimum);
-        this.setMinValueUnsafe(Math.min(value, endValue));
-        this.setMaxValueUnsafe(Math.max(value, endValue));
+        this.setMaxValue(this.minimum);
+        this.setMinValue(this.minimum);
     };
 
     @Override
@@ -52,8 +52,8 @@ public final class RangeProperty extends Property<RangeProperty> {
             if(second instanceof JsonPrimitive p && p.isNumber())
                 secondVal = p.getAsDouble();
 
-            this.setMinValueUnsafe(Math.min(firstVal, secondVal));
             this.setMaxValueUnsafe(Math.max(firstVal, secondVal));
+            this.setMinValueUnsafe(Math.min(firstVal, secondVal));
         }
     }
 

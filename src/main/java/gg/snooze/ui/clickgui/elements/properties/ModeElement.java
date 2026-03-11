@@ -3,7 +3,6 @@ package gg.snooze.ui.clickgui.elements.properties;
 import gg.snooze.ui.clickgui.elements.PropertyElement;
 import gg.snooze.ui.clickgui.elements.properties.sub.OptionElement;
 import gg.snooze.systems.property.properties.ModeProperty;
-import gg.snooze.util.INameable;
 import gg.snooze.util.MouseUtil;
 import lombok.Getter;
 
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class ModeElement<E extends Enum<E>> extends PropertyElement<ModeProperty<E>> {
+public class ModeElement<E> extends PropertyElement<ModeProperty<E>> {
 
     private final List<OptionElement> options = new ArrayList<>();
 
@@ -87,7 +86,7 @@ public class ModeElement<E extends Enum<E>> extends PropertyElement<ModeProperty
 
         if(open) {
             for(E option : this.getProperty().getOptions()) {
-                String optionName = ((INameable) option).getName();
+                String optionName = this.getProperty().getModeName(option);
                 boolean selected = this.getProperty().getValue() == option;
 
                 this.options.add(new OptionElement(optionName, selected));

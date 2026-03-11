@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
 import java.util.function.BooleanSupplier;
 
 @Getter @Setter
@@ -16,6 +17,11 @@ public abstract class Property<T extends Property<T>> {
     public Property(PropertyMetadata metadata, PropertyOwner owner) {
         this.metadata = metadata;
         if(owner != null) owner.getProperties().put(this.metadata.name(), this);
+    }
+
+    public T setVisible(BooleanSupplier supplier) {
+        this.visible = supplier;
+        return (T) this;
     }
 
     public abstract T getSelf();

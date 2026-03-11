@@ -5,16 +5,19 @@ import com.google.gson.JsonPrimitive;
 import gg.snooze.systems.property.Property;
 import gg.snooze.systems.property.PropertyMetadata;
 import gg.snooze.systems.property.PropertyOwner;
-import lombok.Setter;
 
-@Setter
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Consumer;
+
 public final class ToggleProperty extends Property<ToggleProperty> {
+
+    private final Set<Consumer<Boolean>> actions = new HashSet<>();
 
     private boolean value;
 
-    public ToggleProperty(PropertyMetadata metadata, PropertyOwner owner, boolean value) {
+    public ToggleProperty(PropertyMetadata metadata, PropertyOwner owner) {
         super(metadata, owner);
-        this.value = value;
     }
 
     @Override
@@ -34,12 +37,27 @@ public final class ToggleProperty extends Property<ToggleProperty> {
         }
     }
 
+    public ToggleProperty addAction(Consumer<Boolean> consumer) {
+        this.actions.add(consumer);
+        return this;
+    }
+
     public boolean getValue() {
         return this.value;
     }
 
     public void toggle() {
         this.setValue(!this.value);
+    }
+
+    public void setValue(boolean value) {
+        if(this.value != value) {
+            this.value = value;
+
+            for(Consumer<Boolean> action : this.actions) {
+                action.accept(this.value);
+            }
+        }
     }
 
 }

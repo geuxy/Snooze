@@ -31,7 +31,7 @@ public enum Snooze {
 
         this.initialized = true;
 
-        this.eventBus = new EventBus(64, 128);
+        this.eventBus = new EventBus((short) 64, (short) 128);
         this.modules = new ModuleManager();
 
         this.modules.init();

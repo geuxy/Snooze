@@ -10,7 +10,7 @@ import gg.snooze.systems.property.properties.*;
 import gg.snooze.util.MouseUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,28 +29,18 @@ public class ModuleElement extends UIElement {
 
     public void createProperties() {
         this.clearProperties();
-        this.module.getProperties().values().stream().map(property -> {
-            if(property instanceof ModeProperty<?> e) {
-                return new ModeElement<>(e);
-
-            } else if(property instanceof MultiToggleProperty e) {
-                return new MultiToggleElement(e);
-
-            } else if(property instanceof NoteProperty e) {
-                return new NoteElement(e);
-
-            } else if(property instanceof RangeProperty e) {
-                return new RangeElement(e);
-
-            } else if(property instanceof SliderProperty e) {
-                return new SliderElement(e);
-
-            } else if(property instanceof ToggleProperty e) {
-                return new ToggleElement(e);
+        this.module.getProperties().values().stream().map(property ->
+            switch(property) {
+                case ModeProperty<?> p -> new ModeElement<>(p);
+                case MultiToggleProperty p -> new MultiToggleElement(p);
+                case NoteProperty p -> new NoteElement(p);
+                case RangeProperty p -> new RangeElement(p);
+                case SliderProperty p -> new SliderElement(p);
+                case ToggleProperty p -> new ToggleElement(p);
+                default -> null;
             }
-            return null;
 
-        }).filter(Objects::nonNull).forEach(this.properties::add);
+        ).filter(Objects::nonNull).forEach(this.properties::add);
 
         this.propertyArea = new UIElement();
     }
@@ -79,7 +69,7 @@ public class ModuleElement extends UIElement {
         this.propertyArea.setSize(width, propertyHeight);
     }
 
-    public void renderProperties(DrawContext context, ClickGuiTheme theme, double mouseX, double mouseY) {
+    public void renderProperties(GuiGraphics context, ClickGuiTheme theme, double mouseX, double mouseY) {
         if(propertyArea == null) return;
 
         theme.renderPropertyArea(context, propertyArea, mouseX, mouseY);

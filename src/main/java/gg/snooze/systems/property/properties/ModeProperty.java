@@ -7,19 +7,29 @@ import gg.snooze.systems.property.PropertyMetadata;
 import gg.snooze.systems.property.PropertyOwner;
 import lombok.Getter;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BooleanSupplier;
+import java.util.function.Function;
+
 @Getter
-public final class ModeProperty<E extends Enum<E>> extends Property<ModeProperty<E>> {
+public final class ModeProperty<E> extends Property<ModeProperty<E>> {
 
     private final E[] options;
 
     private E value;
     private int valueIndex;
 
-    public ModeProperty(PropertyMetadata metadata, PropertyOwner owner, int index, E[] options) {
+    private final Function<E, String> nameFunction;
+
+    private final Set<BiConsumer<E, E>> actions = new HashSet<>();
+
+    public ModeProperty(PropertyMetadata metadata, PropertyOwner owner, Function<E, String> nameFunction, int index, E[] options) {
         super(metadata, owner);
+        this.nameFunction = nameFunction;
         this.options = options;
-        this.value = options[0];
-        this.valueIndex = index;
+        this.setValue(index);
     }
 
     @Override
@@ -39,9 +49,28 @@ public final class ModeProperty<E extends Enum<E>> extends Property<ModeProperty
         }
     }
 
+    public ModeProperty<E> addAction(BiConsumer<E, E> consumer) {
+        this.actions.add(consumer);
+        return this;
+    }
+
+    public String getSelectedModeName() {
+        return this.nameFunction.apply(this.value);
+    }
+
+    public String getModeName(E mode) {
+        return this.nameFunction.apply(mode);
+    }
+
     public void setValue(int index) {
         if(index > -1 && index < options.length) {
-            this.value = this.options[index];
+            E newValue = this.options[index];
+
+            for(BiConsumer<E, E> action : this.actions) {
+                action.accept(this.value, newValue);
+            }
+
+            this.value = newValue;
             this.valueIndex = index;
         }
     }

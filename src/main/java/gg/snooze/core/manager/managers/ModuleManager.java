@@ -6,7 +6,7 @@ import gg.snooze.systems.event.events.KeyPressedEvent;
 import gg.snooze.core.manager.MapManager;
 import gg.snooze.systems.module.Module;
 import gg.snooze.systems.module.modules.ClickGuiModule;
-import gg.snooze.systems.module.modules.TestModule;
+import gg.snooze.systems.module.modules.SprintModule;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +20,7 @@ public class ModuleManager extends MapManager<Class<? extends Module>, Module> {
 
     public void init() {
         this.putModules(
-            TestModule.class,
+            SprintModule.class,
 
             ClickGuiModule.class
         );
@@ -41,6 +41,15 @@ public class ModuleManager extends MapManager<Class<? extends Module>, Module> {
             }
         }
     };
+
+    public <T extends Module> T getModule(Class<T> clazz) {
+        for(Module module : this) {
+            if(clazz.isInstance(module)) {
+                return clazz.cast(module);
+            }
+        }
+        return null;
+    }
 
     @SafeVarargs
     public final void putModules(Class<? extends Module>... classes) {

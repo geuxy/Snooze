@@ -7,10 +7,10 @@ public class EventBus {
     private final Object[] data;
     private final int[] listenerCounts;
 
-    private final int maxEvents;
-    private final int maxListeners;
+    private final short maxEvents;
+    private final short maxListeners;
 
-    public EventBus(int maxEvents, int maxListeners) {
+    public EventBus(short maxEvents, short maxListeners) {
         this.maxEvents = maxEvents;
         this.maxListeners = maxListeners;
 

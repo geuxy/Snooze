@@ -9,7 +9,7 @@ import gg.snooze.ui.clickgui.theme.ClickGuiTheme;
 import gg.snooze.systems.module.Module;
 import gg.snooze.systems.module.info.ModuleType;
 import gg.snooze.util.MouseUtil;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class Dropdown extends UIDragElement {
         this.updateComponents();
     }
 
-    public void render(DrawContext context, double mouseX, double mouseY) {
+    public void render(GuiGraphics context, double mouseX, double mouseY) {
         this.updateComponents();
 
         this.animateDrag(mouseX, mouseY);

@@ -17,15 +17,15 @@ public final class SliderProperty extends Property<SliderProperty> {
     public static final double MIN_INCREMENT = 0.0001D;
 
     private final double minimum, maximum, increment;
-    private final Set<BiConsumer<Double, Double>> valueChangeListeners = new HashSet<>();
+    private final Set<BiConsumer<Double, Double>> actions = new HashSet<>();
     private double value;
 
-    public SliderProperty(PropertyMetadata metadata, PropertyOwner owner, double value, double minimum, double maximum, double increment) {
+    public SliderProperty(PropertyMetadata metadata, PropertyOwner owner, double minimum, double maximum, double increment) {
         super(metadata, owner);
         this.minimum = minimum;
         this.maximum = maximum;
         this.increment = Math.clamp(increment, MIN_INCREMENT, maximum - minimum);
-        this.setValue(value);
+        this.setValue(this.minimum);
     };
 
     @Override
@@ -45,9 +45,20 @@ public final class SliderProperty extends Property<SliderProperty> {
         }
     }
 
+    public SliderProperty addAction(BiConsumer<Double, Double> consumer) {
+        this.actions.add(consumer);
+        return this;
+    }
+
     public void setValue(double value) {
         if(value >= this.minimum && value <= this.maximum) {
-            this.value = Math.round(value / this.increment) * this.increment;
+            double newValue = Math.round(value / this.increment) * this.increment;
+
+            for(BiConsumer<Double, Double> action : this.actions) {
+                action.accept(this.value, newValue);
+            }
+
+            this.value = newValue;
         }
     }
 

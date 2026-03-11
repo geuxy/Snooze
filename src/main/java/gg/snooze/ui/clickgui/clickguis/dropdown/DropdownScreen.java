@@ -3,9 +3,10 @@ package gg.snooze.ui.clickgui.clickguis.dropdown;
 import gg.snooze.ui.clickgui.theme.ClickGuiTheme;
 import gg.snooze.ui.clickgui.theme.impl.DefaultTheme;
 import gg.snooze.systems.module.info.ModuleType;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.network.chat.Component;
 
 public class DropdownScreen extends Screen {
 
@@ -16,7 +17,7 @@ public class DropdownScreen extends Screen {
     private int selectedIndex = 0;
 
     public DropdownScreen() {
-        super(Text.of(""));
+        super(Component.empty());
         this.dropdowns = new Dropdown[ModuleType.values().length];
     }
 
@@ -37,28 +38,28 @@ public class DropdownScreen extends Screen {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float deltaTicks) {
         for(Dropdown dropdown : this.dropdowns) {
             dropdown.render(context, mouseX, mouseY);
         }
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(MouseButtonEvent event, boolean bl) {
         for(int i = this.dropdowns.length - 1; i > -1; i--) {
-            if(this.dropdowns[i].mouseClicked(mouseX, mouseY, button)) {
+            if(this.dropdowns[i].mouseClicked(event.x(), event.y(), event.button())) {
                 return true;
             }
         }
-        return false;
+        return super.mouseClicked(event, bl);
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+    public boolean mouseReleased(MouseButtonEvent event) {
         for(int i = this.dropdowns.length - 1; i > -1; i--) {
-            this.dropdowns[i].mouseReleased(mouseX, mouseY, button);
+            this.dropdowns[i].mouseReleased(event.x(), event.y(), event.button());
         }
-        return false;
+        return super.mouseReleased(event);
     }
 
 }

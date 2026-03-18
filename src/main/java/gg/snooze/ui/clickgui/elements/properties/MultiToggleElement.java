@@ -2,7 +2,7 @@ package gg.snooze.ui.clickgui.elements.properties;
 
 import gg.snooze.ui.clickgui.elements.PropertyElement;
 import gg.snooze.ui.clickgui.elements.properties.sub.OptionElement;
-import gg.snooze.systems.property.properties.MultiToggleProperty;
+import gg.snooze.value.values.MultiBaseValue;
 import gg.snooze.util.MouseUtil;
 import lombok.Getter;
 
@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.Map;
 
 @Getter
-public class MultiToggleElement extends PropertyElement<MultiToggleProperty> {
+public class MultiToggleElement extends PropertyElement<MultiBaseValue> {
 
     private final List<OptionElement> options = new ArrayList<>();
 
     private double originalHeight;
     private boolean open;
 
-    public MultiToggleElement(MultiToggleProperty property) {
+    public MultiToggleElement(MultiBaseValue property) {
         super(property);
     }
 

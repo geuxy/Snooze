@@ -1,16 +1,16 @@
 package gg.snooze.ui.clickgui.elements;
 
+import gg.snooze.value.BaseValue;
 import gg.snooze.ui.framework.UIElement;
 import gg.snooze.ui.clickgui.elements.properties.*;
 import gg.snooze.ui.clickgui.elements.properties.sub.OptionElement;
 import gg.snooze.ui.clickgui.theme.ClickGuiTheme;
-import gg.snooze.systems.module.Module;
-import gg.snooze.systems.property.Property;
-import gg.snooze.systems.property.properties.*;
+import gg.snooze.module.Module;
+import gg.snooze.value.values.*;
 import gg.snooze.util.MouseUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.Objects;
 @Getter @RequiredArgsConstructor
 public class ModuleElement extends UIElement {
 
-    private final List<PropertyElement<? extends Property<?>>> properties = new ArrayList<>();
+    private final List<PropertyElement<? extends BaseValue<?>>> properties = new ArrayList<>();
 
     private final Module module;
 
@@ -31,12 +31,12 @@ public class ModuleElement extends UIElement {
         this.clearProperties();
         this.module.getProperties().values().stream().map(property ->
             switch(property) {
-                case ModeProperty<?> p -> new ModeElement<>(p);
-                case MultiToggleProperty p -> new MultiToggleElement(p);
-                case NoteProperty p -> new NoteElement(p);
-                case RangeProperty p -> new RangeElement(p);
-                case SliderProperty p -> new SliderElement(p);
-                case ToggleProperty p -> new ToggleElement(p);
+                case EnumBaseValue<?> p -> new ModeElement<>(p);
+                case MultiBaseValue p -> new MultiToggleElement(p);
+                case NoteBaseValue p -> new NoteElement(p);
+                case RangeBaseValue p -> new RangeElement(p);
+                case DoubleBaseValue p -> new SliderElement(p);
+                case BoolBaseValue p -> new ToggleElement(p);
                 default -> null;
             }
 
@@ -56,7 +56,7 @@ public class ModuleElement extends UIElement {
 
         double propertyY = originalHeight;
 
-        for(PropertyElement<? extends Property<?>> property : this.properties) {
+        for(PropertyElement<? extends BaseValue<?>> property : this.properties) {
             property.setPosition(x, y + propertyY);
             property.setSize(width, originalHeight);
 
@@ -69,12 +69,12 @@ public class ModuleElement extends UIElement {
         this.propertyArea.setSize(width, propertyHeight);
     }
 
-    public void renderProperties(GuiGraphics context, ClickGuiTheme theme, double mouseX, double mouseY) {
+    public void renderProperties(GuiGraphicsExtractor context, ClickGuiTheme theme, double mouseX, double mouseY) {
         if(propertyArea == null) return;
 
         theme.renderPropertyArea(context, propertyArea, mouseX, mouseY);
 
-        for(PropertyElement<? extends Property<?>> property : this.properties) {
+        for(PropertyElement<? extends BaseValue<?>> property : this.properties) {
             if(property instanceof ModeElement<?> e) {
                 theme.renderMode(context, e, mouseX, mouseY);
 

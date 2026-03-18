@@ -1,8 +1,8 @@
 package gg.snooze.ui.clickgui.elements.properties;
 
+import gg.snooze.value.values.EnumBaseValue;
 import gg.snooze.ui.clickgui.elements.PropertyElement;
 import gg.snooze.ui.clickgui.elements.properties.sub.OptionElement;
-import gg.snooze.systems.property.properties.ModeProperty;
 import gg.snooze.util.MouseUtil;
 import lombok.Getter;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class ModeElement<E> extends PropertyElement<ModeProperty<E>> {
+public class ModeElement<E> extends PropertyElement<EnumBaseValue<E>> {
 
     private final List<OptionElement> options = new ArrayList<>();
 
@@ -18,7 +18,7 @@ public class ModeElement<E> extends PropertyElement<ModeProperty<E>> {
 
     private boolean open;
 
-    public ModeElement(ModeProperty<E> property) {
+    public ModeElement(EnumBaseValue<E> property) {
         super(property);
     }
 
@@ -31,7 +31,7 @@ public class ModeElement<E> extends PropertyElement<ModeProperty<E>> {
             return true;
 
         } else if(open && MouseUtil.isMouseOver(mouseX, mouseY, this) && button == 0) {
-            ModeProperty<E> property = this.getProperty();
+            EnumBaseValue<E> property = this.getProperty();
 
             for(int i = 0; i < property.getOptions().length; i++) {
                 double optionY = y + ((i + 1) * originalHeight);

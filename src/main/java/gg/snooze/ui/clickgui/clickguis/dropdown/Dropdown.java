@@ -1,15 +1,15 @@
 package gg.snooze.ui.clickgui.clickguis.dropdown;
 
-import gg.snooze.core.Snooze;
+import gg.snooze.Snooze;
 import gg.snooze.ui.framework.UIDragElement;
 import gg.snooze.ui.framework.UIElement;
 import gg.snooze.ui.clickgui.elements.CategoryElement;
 import gg.snooze.ui.clickgui.elements.ModuleElement;
 import gg.snooze.ui.clickgui.theme.ClickGuiTheme;
-import gg.snooze.systems.module.Module;
-import gg.snooze.systems.module.info.ModuleType;
+import gg.snooze.module.Module;
+import gg.snooze.module.info.ModuleType;
 import gg.snooze.util.MouseUtil;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class Dropdown extends UIDragElement {
         this.setSize(width, height);
         this.componentHeight = componentHeight;
 
-        List<Module> modules = Snooze.INSTANCE.modules().findAll(m -> m.getMetadata().type() == type);
+        List<Module> modules = Snooze.INSTANCE.modules.findAll(m -> m.getMetadata().type() == type);
 
         this.category = new CategoryElement(type);
         this.modules = new ModuleElement[modules.size()];
@@ -47,7 +47,7 @@ public class Dropdown extends UIDragElement {
         this.updateComponents();
     }
 
-    public void render(GuiGraphics context, double mouseX, double mouseY) {
+    public void render(GuiGraphicsExtractor context, double mouseX, double mouseY) {
         this.updateComponents();
 
         this.animateDrag(mouseX, mouseY);

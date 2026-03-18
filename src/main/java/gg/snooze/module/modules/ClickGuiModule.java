@@ -1,0 +1,34 @@
+package gg.snooze.module.modules;
+
+import gg.snooze.ui.clickgui.clickguis.dropdown.DropdownScreen;
+import gg.snooze.module.Module;
+import gg.snooze.module.info.ModuleData;
+import gg.snooze.module.info.ModuleType;
+import net.minecraft.client.Minecraft;
+import org.lwjgl.glfw.GLFW;
+
+@ModuleData(
+        name = "Click Gui",
+        note = "A fancy user interface to customize modules",
+        type = ModuleType.VISUAL,
+        keyCode = GLFW.GLFW_KEY_RIGHT_SHIFT
+)
+public class ClickGuiModule extends Module {
+
+    private DropdownScreen dropdown;
+
+    public ClickGuiModule() {
+        this.setOnEnable(() -> {
+            Minecraft client = Minecraft.getInstance();
+
+            if(dropdown == null)
+                this.dropdown = new DropdownScreen();
+
+            if(client.screen == null)
+                client.setScreen(this.dropdown);
+
+            return false;
+        });
+    }
+
+}

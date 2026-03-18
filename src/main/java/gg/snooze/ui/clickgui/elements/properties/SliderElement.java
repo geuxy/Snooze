@@ -1,25 +1,25 @@
 package gg.snooze.ui.clickgui.elements.properties;
 
+import gg.snooze.value.values.DoubleBaseValue;
 import gg.snooze.ui.clickgui.elements.PropertyElement;
-import gg.snooze.systems.property.properties.SliderProperty;
 import gg.snooze.util.MouseUtil;
 import lombok.Getter;
 
 @Getter
-public class SliderElement extends PropertyElement<SliderProperty> {
+public class SliderElement extends PropertyElement<DoubleBaseValue> {
 
     private double valueWidth;
     private boolean dragging;
     private String valueText;
 
-    public SliderElement(SliderProperty property) {
+    public SliderElement(DoubleBaseValue property) {
         super(property);
         this.updateValueText();
     }
 
     public void preRender(double mouseX, double mouseY) {
         if(dragging) {
-            SliderProperty property = this.getProperty();
+            DoubleBaseValue property = this.getProperty();
             double min = property.getMinimum();
             double max = property.getMaximum();
             double diff = Math.min(width, Math.max(0, mouseX - x));
@@ -53,7 +53,7 @@ public class SliderElement extends PropertyElement<SliderProperty> {
     }
 
     private void updateValueWidth() {
-        SliderProperty property = this.getProperty();
+        DoubleBaseValue property = this.getProperty();
 
         double min = property.getMinimum();
         double max = property.getMaximum();

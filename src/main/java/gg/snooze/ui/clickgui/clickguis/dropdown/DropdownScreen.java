@@ -2,8 +2,8 @@ package gg.snooze.ui.clickgui.clickguis.dropdown;
 
 import gg.snooze.ui.clickgui.theme.ClickGuiTheme;
 import gg.snooze.ui.clickgui.theme.impl.DefaultTheme;
-import gg.snooze.systems.module.info.ModuleType;
-import net.minecraft.client.gui.GuiGraphics;
+import gg.snooze.module.info.ModuleType;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
@@ -38,10 +38,11 @@ public class DropdownScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float deltaTicks) {
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float a) {
         for(Dropdown dropdown : this.dropdowns) {
             dropdown.render(context, mouseX, mouseY);
         }
+        super.extractRenderState(context, mouseX, mouseY, a);
     }
 
     @Override

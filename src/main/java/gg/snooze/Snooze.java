@@ -1,0 +1,33 @@
+package gg.snooze;
+
+import gg.snooze.event.EventBus;
+import gg.snooze.manager.managers.ModuleManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class Snooze {
+
+    public static final Snooze INSTANCE = new Snooze();
+
+    public static final String NAME = "Snooze";
+    public static final String MOD_ID = "snooze";
+    public static final double VERSION = 1.0;
+
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+    public final EventBus eventBus = new EventBus(64, 128);
+    public final ModuleManager modules = new ModuleManager();
+
+    private boolean initialized;
+
+    public void start() {
+        if(this.initialized) {
+            LOGGER.warn("Client start ignored because it has already started!");
+            return;
+        }
+
+        this.initialized = true;
+        this.modules.init();
+    }
+
+}

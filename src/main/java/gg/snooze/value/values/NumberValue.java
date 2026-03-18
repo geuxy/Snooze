@@ -2,6 +2,7 @@ package gg.snooze.value.values;
 
 import gg.snooze.value.BaseValue;
 import gg.snooze.value.ValueOwner;
+
 import lombok.Getter;
 
 import java.util.HashSet;
@@ -9,15 +10,16 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 
 @Getter
-public final class DoubleBaseValue extends BaseValue<DoubleBaseValue> {
+public final class NumberValue extends BaseValue<NumberValue> {
 
     public static final double MIN_INCREMENT = 0.0001D;
 
-    private final double minimum, maximum, increment;
     private final Set<BiConsumer<Double, Double>> actions = new HashSet<>();
+
+    private final double minimum, maximum, increment;
     private double value;
 
-    public DoubleBaseValue(String name, ValueOwner owner, double minimum, double maximum, double step) {
+    public NumberValue(String name, ValueOwner owner, double minimum, double maximum, double step) {
         super(name, owner);
         this.minimum = minimum;
         this.maximum = maximum;
@@ -25,7 +27,7 @@ public final class DoubleBaseValue extends BaseValue<DoubleBaseValue> {
         this.setValue(this.minimum);
     }
 
-    public DoubleBaseValue addAction(BiConsumer<Double, Double> consumer) {
+    public NumberValue addAction(BiConsumer<Double, Double> consumer) {
         this.actions.add(consumer);
         return this;
     }

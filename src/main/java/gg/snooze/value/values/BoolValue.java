@@ -7,36 +7,33 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public final class BoolBaseValue extends BaseValue<BoolBaseValue> {
+public final class BoolValue extends BaseValue<BoolValue> {
 
     private final Set<Consumer<Boolean>> actions = new HashSet<>();
 
     private boolean value;
 
-    public BoolBaseValue(String name, ValueOwner owner) {
+    public BoolValue(String name, ValueOwner owner) {
         super(name, owner);
     }
 
-    public BoolBaseValue addAction(Consumer<Boolean> consumer) {
+    public BoolValue addAction(Consumer<Boolean> consumer) {
         this.actions.add(consumer);
         return this;
-    }
-
-    public boolean getValue() {
-        return this.value;
     }
 
     public void toggle() {
         this.setValue(!this.value);
     }
 
+    public boolean getValue() {
+        return this.value;
+    }
+
     public void setValue(boolean value) {
         if(this.value != value) {
             this.value = value;
-
-            for(Consumer<Boolean> action : this.actions) {
-                action.accept(this.value);
-            }
+            this.actions.forEach(a -> a.accept(value));
         }
     }
 

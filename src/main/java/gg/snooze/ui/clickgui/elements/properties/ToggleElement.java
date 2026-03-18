@@ -1,12 +1,12 @@
 package gg.snooze.ui.clickgui.elements.properties;
 
-import gg.snooze.value.values.BoolBaseValue;
+import gg.snooze.value.values.BoolValue;
 import gg.snooze.ui.clickgui.elements.PropertyElement;
 import gg.snooze.util.MouseUtil;
 
-public class ToggleElement extends PropertyElement<BoolBaseValue> {
+public class ToggleElement extends PropertyElement<BoolValue> {
 
-    public ToggleElement(BoolBaseValue property) {
+    public ToggleElement(BoolValue property) {
         super(property);
     }
 

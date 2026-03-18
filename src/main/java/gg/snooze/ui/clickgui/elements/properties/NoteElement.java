@@ -1,11 +1,11 @@
 package gg.snooze.ui.clickgui.elements.properties;
 
 import gg.snooze.ui.clickgui.elements.PropertyElement;
-import gg.snooze.value.values.NoteBaseValue;
+import gg.snooze.value.values.LabelValue;
 
-public class NoteElement extends PropertyElement<NoteBaseValue> {
+public class NoteElement extends PropertyElement<LabelValue> {
 
-    public NoteElement(NoteBaseValue property) {
+    public NoteElement(LabelValue property) {
         super(property);
     }
 

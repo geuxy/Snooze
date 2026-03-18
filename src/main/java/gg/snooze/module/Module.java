@@ -19,9 +19,10 @@ public class Module implements ValueOwner {
 
     private static final BooleanSupplier DEFAULT_TOGGLE_SUPPLIER = () -> true;
 
+    private final Int2ObjectArrayMap<Listener<?>> listeners;
+
     private final ModuleMetadata metadata;
     private final ModuleConfig config;
-    private final Int2ObjectArrayMap<Listener<?>> listeners = new Int2ObjectArrayMap<>();
 
     private BooleanSupplier onEnable = DEFAULT_TOGGLE_SUPPLIER;
     private BooleanSupplier onDisable = DEFAULT_TOGGLE_SUPPLIER;
@@ -29,6 +30,7 @@ public class Module implements ValueOwner {
     public Module() {
         ModuleData data = this.getClass().getAnnotation(ModuleData.class);
 
+        this.listeners = new Int2ObjectArrayMap<>();
         this.metadata = new ModuleMetadata(data.name(), data.note(), data.type());
         this.config = new ModuleConfig(data.enabled(), data.keyCode());
 
@@ -47,12 +49,12 @@ public class Module implements ValueOwner {
 
         if(enabled) {
             if(this.onEnable.getAsBoolean()) {
-                listeners.forEach(Snooze.INSTANCE.eventBus::subscribe);
                 this.config.setEnabled(true);
+                this.listeners.forEach(Snooze.INSTANCE.eventBus::subscribe);
             }
         } else {
             if(this.onDisable.getAsBoolean()) {
-                listeners.forEach(Snooze.INSTANCE.eventBus::unsubscribe);
+                this.listeners.forEach(Snooze.INSTANCE.eventBus::unsubscribe);
                 this.config.setEnabled(false);
             }
         }

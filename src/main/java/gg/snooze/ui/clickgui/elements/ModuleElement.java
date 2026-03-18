@@ -31,12 +31,12 @@ public class ModuleElement extends UIElement {
         this.clearProperties();
         this.module.getProperties().values().stream().map(property ->
             switch(property) {
-                case EnumBaseValue<?> p -> new ModeElement<>(p);
-                case MultiBaseValue p -> new MultiToggleElement(p);
-                case NoteBaseValue p -> new NoteElement(p);
-                case RangeBaseValue p -> new RangeElement(p);
-                case DoubleBaseValue p -> new SliderElement(p);
-                case BoolBaseValue p -> new ToggleElement(p);
+                case ModeValue<?> p -> new ModeElement<>(p);
+                case MultiValue p -> new MultiToggleElement(p);
+                case LabelValue p -> new NoteElement(p);
+                case RangeValue p -> new RangeElement(p);
+                case NumberValue p -> new SliderElement(p);
+                case BoolValue p -> new ToggleElement(p);
                 default -> null;
             }
 

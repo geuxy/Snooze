@@ -1,6 +1,6 @@
 package gg.snooze.ui.clickgui.elements.properties;
 
-import gg.snooze.value.values.RangeBaseValue;
+import gg.snooze.value.values.RangeValue;
 import gg.snooze.ui.clickgui.elements.PropertyElement;
 import gg.snooze.util.MouseUtil;
 import lombok.Getter;
@@ -9,14 +9,14 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 // holy shitcode
-public class RangeElement extends PropertyElement<RangeBaseValue> {
+public class RangeElement extends PropertyElement<RangeValue> {
 
     @Getter
     private double minValueWidth, maxValueWidth;
 
     private int draggingDirection;
 
-    public RangeElement(RangeBaseValue property) {
+    public RangeElement(RangeValue property) {
         super(property);
     }
 
@@ -64,7 +64,7 @@ public class RangeElement extends PropertyElement<RangeBaseValue> {
 
     private void computeSliderValues(double mouseX, BiConsumer<Double, Double> consumer) {
         if(draggingDirection != 0) {
-            RangeBaseValue property = this.getProperty();
+            RangeValue property = this.getProperty();
 
             double diff = Math.min(width, Math.max(0, mouseX - x));
             double range = property.getMaximum() - property.getMinimum();
@@ -77,7 +77,7 @@ public class RangeElement extends PropertyElement<RangeBaseValue> {
     }
 
     private void updateValueWidth(double value, Consumer<Double> consumer) {
-        RangeBaseValue property = this.getProperty();
+        RangeValue property = this.getProperty();
 
         double min = property.getMinimum();
         double max = property.getMaximum();

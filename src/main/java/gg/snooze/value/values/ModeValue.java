@@ -10,7 +10,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 @Getter
-public final class EnumBaseValue<E> extends BaseValue<EnumBaseValue<E>> {
+public final class ModeValue<E> extends BaseValue<ModeValue<E>> {
 
     private final E[] options;
     private final Function<E, String> nameFunction;
@@ -18,7 +18,7 @@ public final class EnumBaseValue<E> extends BaseValue<EnumBaseValue<E>> {
 
     private final Set<BiConsumer<E, E>> actions = new HashSet<>();
 
-    public EnumBaseValue(String name, ValueOwner owner, E[] options, Function<E, String> nameFunction) {
+    public ModeValue(String name, ValueOwner owner, E[] options, Function<E, String> nameFunction) {
         super(name, owner);
 
         if(options.length == 0) {
@@ -30,13 +30,9 @@ public final class EnumBaseValue<E> extends BaseValue<EnumBaseValue<E>> {
         this.valueIndex = 0;
     }
 
-    public EnumBaseValue<E> addAction(BiConsumer<E, E> consumer) {
+    public ModeValue<E> addAction(BiConsumer<E, E> consumer) {
         this.actions.add(consumer);
         return this;
-    }
-
-    public E getValue() {
-        return this.options[this.valueIndex];
     }
 
     public String getSelectedModeName() {
@@ -47,14 +43,15 @@ public final class EnumBaseValue<E> extends BaseValue<EnumBaseValue<E>> {
         return this.nameFunction.apply(mode);
     }
 
+    public E getValue() {
+        return this.options[this.valueIndex];
+    }
+
     public void setValue(int index) {
         if(index > -1 && index < options.length) {
             E newValue = this.options[index];
 
-            for(BiConsumer<E, E> action : this.actions) {
-                action.accept(this.options[this.valueIndex], newValue);
-            }
-
+            this.actions.forEach(a -> a.accept(getValue(), newValue));
             this.valueIndex = index;
         }
     }

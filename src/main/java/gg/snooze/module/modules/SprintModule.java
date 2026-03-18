@@ -15,7 +15,7 @@ import gg.snooze.value.ValueFactory;
 public class SprintModule extends Module {
 
     public SprintModule() {
-        var omni = ValueFactory.buildBool("All Directions");
+        var omni = ValueFactory.bool("All Directions");
 
         this.getListeners().put(UpdateEvent.ID, event -> {
             if(omni.getValue()) {

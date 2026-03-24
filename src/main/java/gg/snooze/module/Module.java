@@ -2,9 +2,12 @@ package gg.snooze.module;
 
 import gg.snooze.Snooze;
 import gg.snooze.event.Listener;
+import gg.snooze.event.callables.BaseEvent;
+import gg.snooze.event.events.PreUpdateEvent;
 import gg.snooze.module.info.ModuleConfig;
 import gg.snooze.module.info.ModuleData;
 import gg.snooze.module.info.ModuleMetadata;
+import gg.snooze.util.exceptions.ModuleToggleException;
 import gg.snooze.value.BaseValue;
 import gg.snooze.value.ValueOwner;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
@@ -12,20 +15,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.LinkedHashMap;
-import java.util.function.BooleanSupplier;
 
 @Getter @Setter
 public class Module implements ValueOwner {
-
-    private static final BooleanSupplier DEFAULT_TOGGLE_SUPPLIER = () -> true;
 
     private final Int2ObjectArrayMap<Listener<?>> listeners;
 
     private final ModuleMetadata metadata;
     private final ModuleConfig config;
-
-    private BooleanSupplier onEnable = DEFAULT_TOGGLE_SUPPLIER;
-    private BooleanSupplier onDisable = DEFAULT_TOGGLE_SUPPLIER;
 
     public Module() {
         ModuleData data = this.getClass().getAnnotation(ModuleData.class);
@@ -42,22 +39,54 @@ public class Module implements ValueOwner {
         return this.config.getProperties();
     }
 
+    public void onEnable() {}
+    public void onDisable() {}
+
+    public void registerListeners() {
+        this.listeners.forEach(Snooze.INSTANCE.eventBus::subscribe);
+    }
+
+    public void unregisterListeners() {
+        this.listeners.forEach(Snooze.INSTANCE.eventBus::unsubscribe);
+    }
+
+    public void clearListeners() {
+        this.unregisterListeners();
+        this.listeners.clear();
+    }
+
+    public <T extends BaseEvent> void addListener(int id, Listener<T> listener) {
+        this.listeners.put(id, listener);
+
+        if(this.config.isEnabled()) {
+            Snooze.INSTANCE.eventBus.subscribe(PreUpdateEvent.ID, listener);
+        }
+    }
+
+    public void removeListener(int id, Listener<?> listener) {
+        Snooze.INSTANCE.eventBus.unsubscribe(PreUpdateEvent.ID, listener);
+        this.listeners.remove(id);
+    }
+
     public void setEnabled(boolean enabled) {
         if(enabled == this.config.isEnabled()) {
             return;
         }
 
-        if(enabled) {
-            if(this.onEnable.getAsBoolean()) {
+        try {
+            if (enabled) {
+                this.onEnable();
                 this.config.setEnabled(true);
-                this.listeners.forEach(Snooze.INSTANCE.eventBus::subscribe);
-            }
-        } else {
-            if(this.onDisable.getAsBoolean()) {
-                this.listeners.forEach(Snooze.INSTANCE.eventBus::unsubscribe);
+                this.registerListeners();
+
+            } else {
+                this.onDisable();
+                this.unregisterListeners();
                 this.config.setEnabled(false);
             }
-        }
+
+        } catch(ModuleToggleException _) {}
+
     }
 
 }

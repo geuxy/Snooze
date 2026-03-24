@@ -1,8 +1,9 @@
 package gg.snooze.event;
 
-import gg.snooze.event.callables.AbstractEvent;
+import gg.snooze.event.callables.BaseEvent;
 
-public interface Listener<T extends AbstractEvent> {
+@FunctionalInterface
+public interface Listener<T extends BaseEvent> {
 
     void onEvent(T event);
 

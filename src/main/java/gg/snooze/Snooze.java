@@ -15,8 +15,13 @@ public class Snooze {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    public final EventBus eventBus = new EventBus(64, 128);
-    public final ModuleManager modules = new ModuleManager();
+    public final EventBus eventBus;
+    public final ModuleManager modules;
+
+    private Snooze() {
+        this.eventBus = new EventBus(64, 128);
+        this.modules = new ModuleManager();
+    }
 
     private boolean initialized;
 

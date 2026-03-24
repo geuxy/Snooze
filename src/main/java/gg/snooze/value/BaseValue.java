@@ -1,30 +1,30 @@
 package gg.snooze.value;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.function.BooleanSupplier;
 
-@Getter @Setter
+@Getter
 public abstract class BaseValue<T extends BaseValue<T>> {
 
     private static final BooleanSupplier DEFAULT_VISIBILITY = () -> true;
 
     private final String name;
 
-    private BooleanSupplier visible;
+    private BooleanSupplier visibility;
 
     public BaseValue(String name, ValueOwner owner) {
         this.name = name;
-        this.visible = DEFAULT_VISIBILITY;
+        this.visibility = DEFAULT_VISIBILITY;
 
         if(owner != null) {
             owner.getProperties().put(this.name, this);
         }
     }
 
-    public T setVisible(BooleanSupplier supplier) {
-        this.visible = supplier;
+    @SuppressWarnings("unchecked")
+    public T showIf(BooleanSupplier supplier) {
+        this.visibility = supplier;
         return (T) this;
     }
 

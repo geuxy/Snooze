@@ -1,15 +1,14 @@
 package gg.snooze.event.callables;
 
-import lombok.Getter;
-import lombok.Setter;
+import gg.snooze.event.Cancellable;
 
-@Getter @Setter
-public abstract class CancellableEvent extends AbstractEvent {
+public abstract class CancellableEvent extends BaseEvent implements Cancellable {
 
     private boolean cancelled = false;
 
+    @Override
     public void cancel() {
-        this.setCancelled(true);
+        this.cancelled = true;
     }
 
 }

@@ -1,56 +1,57 @@
 package gg.snooze.event;
 
-import gg.snooze.event.callables.AbstractEvent;
+import gg.snooze.event.callables.BaseEvent;
 
 public class EventBus {
 
-    private final Object[] data;
+    private final Listener<?>[][] data;
     private final int[] listenerCounts;
 
-    private final int maxEvents;
-    private final int maxListeners;
-
     public EventBus(int maxEvents, int maxListeners) {
-        this.maxEvents = maxEvents;
-        this.maxListeners = maxListeners;
-
-        this.data = new Object[maxEvents * maxListeners];
-        this.listenerCounts = new int[maxListeners];
+        this.data = new Listener<?>[maxEvents][maxListeners];
+        this.listenerCounts = new int[maxEvents];
     }
 
-    public <T extends AbstractEvent> void subscribe(int eventId, Listener<T> listener) {
-        int count = listenerCounts[eventId];
-        int index = eventId * maxListeners + count;
-
-        this.data[index] = listener;
-        this.listenerCounts[eventId] = count + 1;
-    }
-
-    public <T extends AbstractEvent> void unsubscribe(int eventId, Listener<T> listener) {
+    public <T extends BaseEvent> void subscribe(int eventId, Listener<T> listener) {
         int count = this.listenerCounts[eventId];
-        int baseIndex = eventId * maxListeners;
 
-        for (int i = 0; i < count; i++) {
-            int index = baseIndex + i;
+        this.data[eventId][count] = listener;
+        ++this.listenerCounts[eventId];
+    }
 
-            if (data[index] == listener) {
-                int lastIndex = baseIndex + count - 1;
+    public <T extends BaseEvent> void unsubscribe(int eventId, Listener<T> listener) {
+        int count = this.listenerCounts[eventId];
 
-                this.data[index] = data[lastIndex];
-                this.data[lastIndex] = null;
-                this.listenerCounts[eventId] = count - 1;
+        if(count == 0) {
+            return;
+        }
+
+        Listener<?>[] listeners = this.data[eventId];
+
+        for (int i = count; i >= 0; i--) {
+            if (listeners[i] == listener) {
+                int lastIndex = count - 1;
+
+                listeners[i] = listeners[lastIndex];
+                listeners[lastIndex] = null;
+                --this.listenerCounts[eventId];
                 break;
             }
         }
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends AbstractEvent> void postUnsafe(int eventId, T event) {
+    public <T extends BaseEvent> void postUnsafe(int eventId, T event) {
         int count = this.listenerCounts[eventId];
-        int baseIndex = eventId * maxListeners;
+
+        if(count == 0) {
+            return;
+        }
+
+        Listener<?>[] listeners = this.data[eventId];
 
         for (int i = 0; i < count; i++) {
-            ((Listener<T>) data[baseIndex + i]).onEvent(event);
+            ((Listener<T>) listeners[i]).onEvent(event);
         }
     }
 

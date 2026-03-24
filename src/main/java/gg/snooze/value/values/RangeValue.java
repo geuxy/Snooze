@@ -56,6 +56,7 @@ public final class RangeValue extends BaseValue<RangeValue> {
     private void setMaxValueUnsafe(double maxValue) {
         if(maxValue >= this.minimum && maxValue <= this.maximum) {
             double newMaxValue = Math.round(maxValue / this.step) * this.step;
+
             actions.forEach(a -> a.accept(maxValue, newMaxValue, true));
             this.maxValue = newMaxValue;
         }

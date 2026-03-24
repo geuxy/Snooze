@@ -36,10 +36,7 @@ public final class NumberValue extends BaseValue<NumberValue> {
         if(value >= this.minimum && value <= this.maximum) {
             double newValue = Math.round(value / this.increment) * this.increment;
 
-            for(BiConsumer<Double, Double> action : this.actions) {
-                action.accept(this.value, newValue);
-            }
-
+            this.actions.forEach(a -> a.accept(this.value, newValue));
             this.value = newValue;
         }
     }

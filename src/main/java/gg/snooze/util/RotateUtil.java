@@ -14,8 +14,8 @@ public class RotateUtil {
 
         double distance = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
 
-        float yaw = (float) ((Math.atan2(zDiff, xDiff) * 180 / Math.PI) - 90);
-        float pitch = (float) (-(Math.atan2(yDiff, distance) * 180 / Math.PI));
+        float yaw = (float) ((Math.atan2(zDiff, xDiff) * 180F / Math.PI) - 90F);
+        float pitch = (float) (-(Math.atan2(yDiff, distance) * 180F / Math.PI));
 
         return new Vec2(yaw, pitch);
     }

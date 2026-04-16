@@ -48,7 +48,7 @@ public final class ModeValue<E> extends BaseValue<ModeValue<E>> {
         super(name, owner);
 
         if(options.length == 0) {
-            throw new IllegalStateException("Cannot create mode with no enum constants present");
+            throw new IllegalArgumentException("Cannot create mode with no enum constants present");
         }
 
         this.options = options;

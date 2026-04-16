@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.Map;
 
 @Getter
-public class MultiToggleElement extends PropertyElement<MultiValue> {
+public class MultiElement extends PropertyElement<MultiValue> {
 
     private final List<OptionElement> options = new ArrayList<>();
 
     private double originalHeight;
     private boolean open;
 
-    public MultiToggleElement(MultiValue property) {
+    public MultiElement(MultiValue property) {
         super(property);
     }
 

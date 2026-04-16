@@ -3,6 +3,7 @@
   "package": "gg.snooze.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "EntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

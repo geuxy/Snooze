@@ -6,13 +6,13 @@ import gg.snooze.util.MouseUtil;
 import lombok.Getter;
 
 @Getter
-public class SliderElement extends PropertyElement<NumberValue> {
+public class NumberElement extends PropertyElement<NumberValue> {
 
     private double valueWidth;
     private boolean dragging;
     private String valueText;
 
-    public SliderElement(NumberValue property) {
+    public NumberElement(NumberValue property) {
         super(property);
         this.updateValueText();
     }

@@ -5,8 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@AllArgsConstructor
-@Getter @Setter
+@AllArgsConstructor @Getter @Setter
 public class OptionElement extends UIElement {
 
     private final String name;

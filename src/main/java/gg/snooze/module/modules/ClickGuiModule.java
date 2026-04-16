@@ -22,11 +22,13 @@ public class ClickGuiModule extends Module {
     public void onEnable() {
         Minecraft client = Minecraft.getInstance();
 
-        if(dropdown == null)
+        if(dropdown == null) {
             this.dropdown = new DropdownScreen();
+        }
 
-        if(client.screen == null)
-            client.setScreen(this.dropdown);
+        if(client.gui.screen() == null) {
+            client.setScreenAndShow(this.dropdown);
+        }
 
         throw new ModuleToggleException();
     }

@@ -32,10 +32,11 @@ public class Module implements ValueOwner {
         this.config = new ModuleConfig(data.enabled(), data.keyCode());
 
         Snooze.INSTANCE.modules.setAddingModule(this);
+        this.metadata.type().increaseModulesCount();
     }
 
     @Override
-    public LinkedHashMap<String, BaseValue<?>> getProperties() {
+    public LinkedHashMap<String, BaseValue<?>> getValues() {
         return this.config.getProperties();
     }
 
@@ -86,7 +87,6 @@ public class Module implements ValueOwner {
             }
 
         } catch(ModuleToggleException _) {}
-
     }
 
 }

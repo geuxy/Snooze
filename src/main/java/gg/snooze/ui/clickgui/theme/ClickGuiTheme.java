@@ -19,11 +19,11 @@ public interface ClickGuiTheme {
     void renderModule(GuiGraphicsExtractor context, ModuleElement element, double mouseX, double mouseY);
 
     void renderMode(GuiGraphicsExtractor context, ModeElement<?> element, double mouseX, double mouseY);
-    void renderMultiToggle(GuiGraphicsExtractor context, MultiToggleElement element, double mouseX, double mouseY);
-    void renderNote(GuiGraphicsExtractor context, NoteElement element, double mouseX, double mouseY);
+    void renderMultiToggle(GuiGraphicsExtractor context, MultiElement element, double mouseX, double mouseY);
+    void renderNote(GuiGraphicsExtractor context, LabelElement element, double mouseX, double mouseY);
     void renderRange(GuiGraphicsExtractor context, RangeElement element, double mouseX, double mouseY);
-    void renderSlider(GuiGraphicsExtractor context, SliderElement element, double mouseX, double mouseY);
-    void renderToggle(GuiGraphicsExtractor context, ToggleElement element, double mouseX, double mouseY);
+    void renderSlider(GuiGraphicsExtractor context, NumberElement element, double mouseX, double mouseY);
+    void renderToggle(GuiGraphicsExtractor context, BoolElement element, double mouseX, double mouseY);
     void renderOption(GuiGraphicsExtractor context, OptionElement element, double mouseX, double mouseY);
 
 }

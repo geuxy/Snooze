@@ -4,6 +4,6 @@ import java.util.LinkedHashMap;
 
 public interface ValueOwner {
 
-    LinkedHashMap<String, BaseValue<?>> getProperties();
+    LinkedHashMap<String, BaseValue<?>> getValues();
 
 }

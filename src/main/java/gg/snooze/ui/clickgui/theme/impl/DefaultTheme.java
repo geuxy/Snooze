@@ -1,6 +1,5 @@
 package gg.snooze.ui.clickgui.theme.impl;
 
-import com.mojang.authlib.minecraft.client.MinecraftClient;
 import gg.snooze.ui.framework.UIElement;
 import gg.snooze.ui.clickgui.elements.CategoryElement;
 import gg.snooze.ui.clickgui.elements.ModuleElement;
@@ -10,7 +9,6 @@ import gg.snooze.ui.clickgui.theme.ClickGuiTheme;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import org.apache.logging.log4j.core.pattern.TextRenderer;
 
 import java.awt.*;
 
@@ -75,7 +73,7 @@ public class DefaultTheme implements ClickGuiTheme {
         context.fill(pos[0], pos[1], pos[2], pos[3], bgColor);
         context.centeredText(font, element.getModule().getMetadata().name(), pos[4], fontCenterY, LIGHT_FOREGROUND);
 
-        if (!element.getModule().getProperties().isEmpty()) {
+        if (!element.getModule().getValues().isEmpty()) {
             String arrowText = element.getPropertyArea() != null ? COLLAPSE_CHAR : EXPAND_CHAR;
 
             context.text(font, arrowText, pos[2] - font.width(arrowText) - (SETTING_PADDING * 2), fontCenterY, LIGHT_FOREGROUND, true);
@@ -97,7 +95,7 @@ public class DefaultTheme implements ClickGuiTheme {
     }
 
     @Override
-    public void renderMultiToggle(GuiGraphicsExtractor context, MultiToggleElement element, double mouseX, double mouseY) {
+    public void renderMultiToggle(GuiGraphicsExtractor context, MultiElement element, double mouseX, double mouseY) {
         int[] pos = this.calculatePositions(element.getX(), element.getY(), element.getWidth(), element.getOriginalHeight());
         int fontCenterY = (int) Math.round(pos[5] - (font.lineHeight / 2.0D));
         String text = element.getProperty().getName();
@@ -108,7 +106,7 @@ public class DefaultTheme implements ClickGuiTheme {
     }
 
     @Override
-    public void renderNote(GuiGraphicsExtractor context, NoteElement element, double mouseX, double mouseY) {
+    public void renderNote(GuiGraphicsExtractor context, LabelElement element, double mouseX, double mouseY) {
         int[] pos = this.calculatePositions(element.getX(), element.getY(), element.getWidth(), element.getHeight(), 0, 0);
         int fontCenterY = (int) Math.round(pos[5] - (font.lineHeight / 2.0D));
 
@@ -141,7 +139,7 @@ public class DefaultTheme implements ClickGuiTheme {
     }
 
     @Override
-    public void renderSlider(GuiGraphicsExtractor context, SliderElement element, double mouseX, double mouseY) {
+    public void renderSlider(GuiGraphicsExtractor context, NumberElement element, double mouseX, double mouseY) {
         int[] pos = this.calculatePositions(element.getX(), element.getY(), element.getWidth(), element.getHeight(), 0, 0);
         int fontCenterY = (int) Math.round(pos[5] - (font.lineHeight / 2.0D));
         int valWidth = (int) element.getValueWidth();
@@ -162,7 +160,7 @@ public class DefaultTheme implements ClickGuiTheme {
     }
 
     @Override
-    public void renderToggle(GuiGraphicsExtractor context, ToggleElement element, double mouseX, double mouseY) {
+    public void renderToggle(GuiGraphicsExtractor context, BoolElement element, double mouseX, double mouseY) {
         int[] pos = this.calculatePositions(element.getX(), element.getY(), element.getWidth(), element.getHeight());
         int boxSize = 5;
         int fontCenterY = (int) Math.round(pos[5] - (font.lineHeight / 2.0D));

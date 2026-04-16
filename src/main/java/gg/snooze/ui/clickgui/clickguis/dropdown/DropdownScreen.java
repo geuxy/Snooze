@@ -14,8 +14,6 @@ public class DropdownScreen extends Screen {
 
     private final ClickGuiTheme theme = new DefaultTheme();
 
-    private int selectedIndex = 0;
-
     public DropdownScreen() {
         super(Component.empty());
         this.dropdowns = new Dropdown[ModuleType.values().length];

@@ -1,9 +1,7 @@
 package gg.snooze.ui.clickgui.elements;
 
-import gg.snooze.value.BaseValue;
 import gg.snooze.ui.framework.UIElement;
 import gg.snooze.ui.clickgui.elements.properties.*;
-import gg.snooze.ui.clickgui.elements.properties.sub.OptionElement;
 import gg.snooze.ui.clickgui.theme.ClickGuiTheme;
 import gg.snooze.module.Module;
 import gg.snooze.value.values.*;
@@ -14,12 +12,11 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Getter @RequiredArgsConstructor
 public class ModuleElement extends UIElement {
 
-    private final List<PropertyElement<? extends BaseValue<?>>> properties = new ArrayList<>();
+    private final List<PropertyElement<?>> properties = new ArrayList<>();
 
     private final Module module;
 
@@ -29,18 +26,19 @@ public class ModuleElement extends UIElement {
 
     public void createProperties() {
         this.clearProperties();
-        this.module.getProperties().values().stream().map(property ->
+
+        this.module.getValues().values().stream().map(property ->
             switch(property) {
                 case ModeValue<?> p -> new ModeElement<>(p);
-                case MultiValue p -> new MultiToggleElement(p);
-                case LabelValue p -> new NoteElement(p);
+                case MultiValue p -> new MultiElement(p);
+                case LabelValue p -> new LabelElement(p);
                 case RangeValue p -> new RangeElement(p);
-                case NumberValue p -> new SliderElement(p);
-                case BoolValue p -> new ToggleElement(p);
-                default -> null;
+                case NumberValue p -> new NumberElement(p);
+                case BoolValue p -> new BoolElement(p);
+                default -> throw new IllegalStateException("Unknown property received");
             }
 
-        ).filter(Objects::nonNull).forEach(this.properties::add);
+        ).forEach(this.properties::add);
 
         this.propertyArea = new UIElement();
     }
@@ -52,11 +50,13 @@ public class ModuleElement extends UIElement {
     }
 
     public void updateProperties() {
-        if(propertyArea == null) return;
+        if(propertyArea == null) {
+            return;
+        }
 
         double propertyY = originalHeight;
 
-        for(PropertyElement<? extends BaseValue<?>> property : this.properties) {
+        for(PropertyElement<?> property : this.properties) {
             property.setPosition(x, y + propertyY);
             property.setSize(width, originalHeight);
 
@@ -70,42 +70,39 @@ public class ModuleElement extends UIElement {
     }
 
     public void renderProperties(GuiGraphicsExtractor context, ClickGuiTheme theme, double mouseX, double mouseY) {
-        if(propertyArea == null) return;
+        if(propertyArea == null) {
+            return;
+        }
 
         theme.renderPropertyArea(context, propertyArea, mouseX, mouseY);
 
-        for(PropertyElement<? extends BaseValue<?>> property : this.properties) {
-            if(property instanceof ModeElement<?> e) {
-                theme.renderMode(context, e, mouseX, mouseY);
+        for(PropertyElement<?> property : this.properties) {
+            switch (property) {
+                case BoolElement e -> theme.renderToggle(context, e, mouseX, mouseY);
+                case LabelElement e -> theme.renderNote(context, e, mouseX, mouseY);
+                case NumberElement e -> {
+                    e.preRender(mouseX, mouseY);
+                    theme.renderSlider(context, e, mouseX, mouseY);
+                }
+                case RangeElement e -> {
+                    e.preRender(mouseX, mouseY);
+                    theme.renderRange(context, e, mouseX, mouseY);
+                }
+                case ModeElement<?> e -> {
+                    theme.renderMode(context, e, mouseX, mouseY);
 
-                if(e.getOptions() != null && !e.getOptions().isEmpty()) {
-                    for(OptionElement option : e.getOptions()) {
-                        theme.renderOption(context, option, mouseX, mouseY);
+                    if (e.getOptions() != null && !e.getOptions().isEmpty()) {
+                        e.getOptions().forEach(o -> theme.renderOption(context, o, mouseX, mouseY));
                     }
                 }
+                case MultiElement e -> {
+                    theme.renderMultiToggle(context, e, mouseX, mouseY);
 
-            } else if(property instanceof MultiToggleElement e) {
-                theme.renderMultiToggle(context, e, mouseX, mouseY);
-
-                if(e.getOptions() != null && !e.getOptions().isEmpty()) {
-                    for(OptionElement option : e.getOptions()) {
-                        theme.renderOption(context, option, mouseX, mouseY);
+                    if (e.getOptions() != null && !e.getOptions().isEmpty()) {
+                        e.getOptions().forEach(o -> theme.renderOption(context, o, mouseX, mouseY));
                     }
                 }
-
-            } else if(property instanceof NoteElement e) {
-                theme.renderNote(context, e, mouseX, mouseY);
-
-            } else if(property instanceof RangeElement e) {
-                e.preRender(mouseX, mouseY);
-                theme.renderRange(context, e, mouseX, mouseY);
-
-            } else if(property instanceof SliderElement e) {
-                e.preRender(mouseX, mouseY);
-                theme.renderSlider(context, e, mouseX, mouseY);
-
-            } else if(property instanceof ToggleElement e) {
-                theme.renderToggle(context, e, mouseX, mouseY);
+                default -> throw new IllegalStateException("Unknown property received");
             }
         }
     }
@@ -138,9 +135,7 @@ public class ModuleElement extends UIElement {
 
     public void mouseReleased(double mouseX, double mouseY, int button) {
         if(propertyArea != null) {
-            for(PropertyElement<?> property : this.properties) {
-                property.mouseReleased(mouseX, mouseY, button);
-            }
+            this.properties.forEach(p -> p.mouseReleased(mouseX, mouseY, button));
         }
     }
 

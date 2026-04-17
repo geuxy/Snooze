@@ -9,7 +9,7 @@ public enum ModuleType {
     COMBAT("Combat"),
     MOVEMENT("Movement"),
     PLAYER("Player"),
-    VISUAL("Visual"),
+    RENDER("Render"),
     OTHER("Other");
 
     private final String name;

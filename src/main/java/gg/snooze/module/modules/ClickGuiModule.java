@@ -11,7 +11,7 @@ import org.lwjgl.glfw.GLFW;
 @ModuleData(
         name = "Click Gui",
         note = "A fancy user interface to customize modules",
-        type = ModuleType.VISUAL,
+        type = ModuleType.RENDER,
         keyCode = GLFW.GLFW_KEY_RIGHT_SHIFT
 )
 public class ClickGuiModule extends Module {

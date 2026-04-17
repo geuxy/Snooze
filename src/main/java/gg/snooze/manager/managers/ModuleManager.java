@@ -6,6 +6,7 @@ import gg.snooze.event.events.KeyPressedEvent;
 import gg.snooze.manager.MapManager;
 import gg.snooze.module.Module;
 import gg.snooze.module.modules.ClickGuiModule;
+import gg.snooze.module.modules.InterfaceModule;
 import gg.snooze.module.modules.SprintModule;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +23,9 @@ public class ModuleManager extends MapManager<Class<? extends Module>, Module> {
         this.putModules(
             SprintModule.class,
 
-            ClickGuiModule.class
+            ClickGuiModule.class,
+            
+            InterfaceModule.class
         );
 
         this.addingModule = null;

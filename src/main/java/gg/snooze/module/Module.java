@@ -3,6 +3,7 @@ package gg.snooze.module;
 import gg.snooze.Snooze;
 import gg.snooze.event.Listener;
 import gg.snooze.event.callables.BaseEvent;
+import gg.snooze.event.events.ModuleToggleEvent;
 import gg.snooze.event.events.PreUpdateEvent;
 import gg.snooze.module.info.ModuleConfig;
 import gg.snooze.module.info.ModuleData;
@@ -33,6 +34,10 @@ public class Module implements ValueOwner {
 
         Snooze.INSTANCE.modules.setAddingModule(this);
         this.metadata.type().increaseModulesCount();
+    }
+
+    public String getSuffix() {
+        return null;
     }
 
     @Override
@@ -85,6 +90,8 @@ public class Module implements ValueOwner {
                 this.unregisterListeners();
                 this.config.setEnabled(false);
             }
+
+            Snooze.INSTANCE.eventBus.postUnsafe(ModuleToggleEvent.ID, new ModuleToggleEvent(this));
 
         } catch(ModuleToggleException _) {}
     }

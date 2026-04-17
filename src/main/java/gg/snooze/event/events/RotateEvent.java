@@ -3,7 +3,6 @@ package gg.snooze.event.events;
 import gg.snooze.event.callables.BaseEvent;
 import gg.snooze.util.Rotation;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 @AllArgsConstructor
 public class RotateEvent extends BaseEvent {

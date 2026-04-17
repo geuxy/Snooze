@@ -17,7 +17,7 @@
 	"entrypoints": {
 		"main": [
 			{
-				"value": "gg.snooze.SnoozeMod"
+				"value": "gg.snooze.fabric.SnoozeModInitializer"
 			}
 		]
 	},

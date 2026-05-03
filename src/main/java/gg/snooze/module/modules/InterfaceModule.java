@@ -42,9 +42,16 @@ public class InterfaceModule extends Module {
     }
 
     @Override
+    public void onEnable() {
+        this.enabledModules.clear();
+        this.renderableCache.clear();
+        Snooze.INSTANCE.modules.findAll(m -> m.getConfig().isEnabled()).forEach(this::resolveModule);
+    }
+
+    @Override
     public void onDisable() {
         this.enabledModules.clear();
-        Snooze.INSTANCE.modules.findAll(m -> m.getConfig().isEnabled()).forEach(this::resolveModule);
+        this.renderableCache.clear();
     }
 
     private final Listener<ModuleToggleEvent> onModuleToggle = event -> {

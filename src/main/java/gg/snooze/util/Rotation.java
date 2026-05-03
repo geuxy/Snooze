@@ -6,22 +6,26 @@ import lombok.Getter;
 @Getter @AllArgsConstructor
 public class Rotation {
 
-    private float yaw, pitch;
+    private float x, y;
     private boolean modified;
 
-    public Rotation(float yaw, float pitch) {
-        this.yaw = yaw;
-        this.pitch = pitch;
+    public Rotation(float x, float y) {
+        this.x = x;
+        this.y = y;
         this.modified = false;
     }
 
-    public void setYaw(float yaw) {
-        this.yaw = yaw;
+    public Rotation getDelta(Rotation oldRotation) {
+        return new Rotation(this.x - oldRotation.x, this.y - oldRotation.y);
+    }
+
+    public void setX(float x) {
+        this.x = x;
         this.modified = true;
     }
 
-    public void setPitch(float pitch) {
-        this.pitch = pitch;
+    public void setY(float y) {
+        this.y = y;
         this.modified = true;
     }
 

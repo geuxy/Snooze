@@ -1,7 +1,6 @@
 package gg.snooze;
 
 import gg.snooze.event.EventBus;
-import gg.snooze.fabric.FabricHooks;
 import gg.snooze.manager.managers.ModuleManager;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;

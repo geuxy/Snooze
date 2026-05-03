@@ -8,8 +8,10 @@ import gg.snooze.module.Module;
 import gg.snooze.module.modules.ClickGuiModule;
 import gg.snooze.module.modules.InterfaceModule;
 import gg.snooze.module.modules.SprintModule;
+import gg.snooze.module.modules.killaura.KillAuraModule;
 import lombok.Getter;
 import lombok.Setter;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.stream.Stream;
@@ -21,10 +23,12 @@ public class ModuleManager extends MapManager<Class<? extends Module>, Module> {
 
     public void init() {
         this.putModules(
+            KillAuraModule.class,
+
             SprintModule.class,
 
             ClickGuiModule.class,
-            
+
             InterfaceModule.class
         );
 
@@ -41,6 +45,7 @@ public class ModuleManager extends MapManager<Class<? extends Module>, Module> {
         }
     };
 
+    @Nullable
     public <T extends Module> T getModule(Class<T> clazz) {
         for(Module module : this) {
             if(clazz.isInstance(module)) {

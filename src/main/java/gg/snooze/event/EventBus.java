@@ -2,9 +2,6 @@ package gg.snooze.event;
 
 import gg.snooze.event.callables.BaseEvent;
 
-/*
- * I used Gemini AI for implementing priorities because im lazy, shush
- */
 public final class EventBus {
 
     private final Listener<?>[][] listeners;
@@ -23,20 +20,7 @@ public final class EventBus {
             throw new IllegalStateException("Max listeners reached for event: " + eventId);
         }
 
-        int insertionIndex = count;
-
-        for(int i = 0; i < count; i++) {
-            if(listener.priority() > listeners[i].priority()) {
-                insertionIndex = i;
-                break;
-            }
-        }
-
-        if (insertionIndex < count) {
-            System.arraycopy(listeners, insertionIndex, listeners, insertionIndex + 1, count - insertionIndex);
-        }
-
-        listeners[insertionIndex] = listener;
+        listeners[count] = listener;
         this.listenerCounts[eventId]++;
     }
 
@@ -47,7 +31,7 @@ public final class EventBus {
             return;
         }
 
-        Listener<?>[] listeners = this.listeners[eventId];
+        var listeners = this.listeners[eventId];
 
         for (int i = count; i >= 0; i--) {
             if (listeners[i] == listener) {
@@ -69,7 +53,7 @@ public final class EventBus {
             return;
         }
 
-        Listener<?>[] listeners = this.listeners[eventId];
+        var listeners = this.listeners[eventId];
 
         for (int i = 0; i < count; i++) {
             ((Listener<T>) listeners[i]).onEvent(event);

@@ -4,5 +4,8 @@ package gg.snooze.event;
 public interface Cancellable {
 
     void cancel();
+    default boolean isCancelled() {
+        return false;
+    }
 
 }

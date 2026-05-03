@@ -3,7 +3,6 @@
   "package": "gg.snooze.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
-    "EntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
@@ -13,6 +12,7 @@
   },
   "client": [
     "KeyboardMixin",
-    "LocalPlayerMixin"
+    "LocalPlayerMixin",
+    "MouseHandlerMixin"
   ]
 }

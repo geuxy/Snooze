@@ -12,33 +12,50 @@ import net.minecraft.util.Mth;
 @UtilityClass
 public class RotationHandler {
 
-    public Rotation previous, current;
+    public Rotation previous, current, delta, previousDelta;
     private double accumulatedYaw, accumulatedPitch;
 
-    public void onTurnPlayer(float yaw, float pitch) {
-        RotateEvent event = new RotateEvent(new Rotation(yaw, pitch));
+    public void initializeRotation(float x, float y) {
+        current = new Rotation(x, y);
+        delta = new Rotation(0, 0);
+        previous = current;
+        previousDelta = delta;
+        accumulatedYaw = 0;
+        accumulatedPitch = 0;
+    }
 
+    public boolean onTurnPlayer(float yaw, float pitch) {
+        RotateEvent event = new RotateEvent(new Rotation(yaw, pitch));
         Snooze.INSTANCE.eventBus.postUnsafe(RotateEvent.ID, event);
 
         Rotation rotation = event.rotation;
 
         if(!rotation.isModified()) {
-            previous = current;
-            current = rotation;
-            return;
+            update(rotation);
+            return false;
         }
 
-        previous = current;
-        current = applySensitivityPatch(rotation);
+        update(rotation);
+        return true;
     }
 
-    private Rotation applySensitivityPatch(Rotation rotation) {
+    private void update(Rotation newRotation) {
+        previous = current;
+        previousDelta = delta;
+
+        current = newRotation;
+        delta = new Rotation(current.getX() - previous.getX(), current.getY() - previous.getY());
+        delta.setX(Mth.wrapDegrees(delta.getX()));
+        delta.setY(Mth.clamp(delta.getY(), -90.0F, 90.0F));
+    }
+
+    /*private Rotation applySensitivityPatch(Rotation rotation) {
         double ss = Minecraft.getInstance().options.sensitivity().get() * (double) 0.6F + (double) 0.2F;
         double sensitivityMod = ss * ss * ss;
         double sens = sensitivityMod * (double) 8.0F;
 
-        float deltaYaw = Mth.wrapDegrees(current.getYaw() - previous.getYaw());
-        float deltaPitch = current.getPitch() - previous.getPitch();
+        float deltaYaw = Mth.wrapDegrees(current.getX() - previous.getX());
+        float deltaPitch = current.getY() - previous.getY();
 
         accumulatedYaw += deltaYaw;
         accumulatedPitch += deltaPitch;
@@ -52,12 +69,12 @@ public class RotationHandler {
         accumulatedYaw -= xo;
         accumulatedPitch -= yo;
 
-        float xDelta = (float) yo * 0.15F;
-        float yDelta = (float) xo * 0.15F;
+        float xDelta = (float) xo * 0.15F;
+        float yDelta = (float) yo * 0.15F;
 
-        rotation.setYaw(current.getYaw() + xDelta);
-        rotation.setPitch(current.getPitch() + yDelta);
-        rotation.setPitch(Mth.clamp(rotation.getPitch(), -90.0F, 90.0F));
+        rotation.setX(current.getX() + xDelta);
+        rotation.setY(current.getY() + yDelta);
+        rotation.setY(Mth.clamp(rotation.getY(), -90.0F, 90.0F));
 
         LocalPlayer player = Minecraft.getInstance().player;
 
@@ -66,6 +83,6 @@ public class RotationHandler {
         }
 
         return rotation;
-    }
+    }*/
 
 }

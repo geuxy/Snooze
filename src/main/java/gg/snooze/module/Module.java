@@ -8,6 +8,7 @@ import gg.snooze.event.events.PreUpdateEvent;
 import gg.snooze.module.info.ModuleConfig;
 import gg.snooze.module.info.ModuleData;
 import gg.snooze.module.info.ModuleMetadata;
+import gg.snooze.util.MinecraftInstance;
 import gg.snooze.util.exceptions.ModuleToggleException;
 import gg.snooze.value.BaseValue;
 import gg.snooze.value.ValueOwner;
@@ -18,7 +19,7 @@ import lombok.Setter;
 import java.util.LinkedHashMap;
 
 @Getter @Setter
-public class Module implements ValueOwner {
+public class Module implements ValueOwner, MinecraftInstance {
 
     private final Int2ObjectArrayMap<Listener<?>> listeners;
 

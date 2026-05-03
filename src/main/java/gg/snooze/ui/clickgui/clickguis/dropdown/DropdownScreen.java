@@ -36,11 +36,11 @@ public class DropdownScreen extends Screen {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float a) {
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         for(Dropdown dropdown : this.dropdowns) {
-            dropdown.render(context, mouseX, mouseY);
+            dropdown.render(graphics, mouseX, mouseY);
         }
-        super.extractRenderState(context, mouseX, mouseY, a);
+        super.extractRenderState(graphics, mouseX, mouseY, a);
     }
 
     @Override

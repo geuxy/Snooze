@@ -26,7 +26,7 @@ public class ClickGuiModule extends Module {
             this.dropdown = new DropdownScreen();
         }
 
-        if(client.gui.screen() == null) {
+        if(client.screen == null) {
             client.setScreenAndShow(this.dropdown);
         }
 

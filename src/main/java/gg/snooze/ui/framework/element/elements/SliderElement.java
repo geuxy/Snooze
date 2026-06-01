@@ -1,8 +1,9 @@
-package gg.snooze.ui.framework.element.elements.settings;
+package gg.snooze.ui.framework.element.elements;
 
 import gg.snooze.setting.settings.NumberSetting;
 import gg.snooze.ui.framework.element.BaseElement;
 import gg.snooze.ui.framework.event.events.MouseClickEvent;
+import gg.snooze.ui.framework.style.ElementStyle;
 import org.jetbrains.annotations.NotNull;
 
 public class SliderElement extends BaseElement {
@@ -19,40 +20,16 @@ public class SliderElement extends BaseElement {
         double getValue();
         double getMin();
         double getMax();
-
-        default String getText() {
-            return "";
-        }
-
+        default String getText() {return "";}
     }
 
     public SliderElement(NumberSetting setting) {
         this(new Controller() {
-
-            @Override
-            public void setValue(double value) {
-                setting.setValue(value);
-            }
-
-            @Override
-            public double getValue() {
-                return setting.getValue();
-            }
-
-            @Override
-            public double getMin() {
-                return setting.getMinimum();
-            }
-
-            @Override
-            public double getMax() {
-                return setting.getMaximum();
-            }
-
-            @Override
-            public String getText() {
-                return setting.name;
-            }
+            @Override public void setValue(double value) {setting.setValue(value);}
+            @Override public double getValue() {return setting.getValue();}
+            @Override public double getMin() {return setting.getMinimum();}
+            @Override public double getMax() {return setting.getMaximum();}
+            @Override public String getText() {return setting.name;}
         });
     }
 
@@ -76,18 +53,16 @@ public class SliderElement extends BaseElement {
     }
 
     @Override
-    public void render(int mouseX, int mouseY) {
+    public void render(@NotNull ElementStyle style) {
         if(this.dragging) {
-            double diff = Math.clamp(mouseX - this.x, 0, this.width);
+            double diff = Math.clamp(style.mx() - this.x, 0, this.width);
             double range = this.controller.getMax() - this.controller.getMin();
 
             this.valueWidth = (int) Math.round(diff);
             this.controller.setValue((diff / this.width) * range + this.controller.getMin());
         }
 
-        if(this.getStyle() != null) {
-            this.getStyle().drawSlider(this, mouseX, mouseY);
-        }
+        style.drawSlider(this);
     }
 
     public int getValueWidth() {

@@ -3,7 +3,6 @@ package gg.snooze.ui.framework.element.elements;
 import gg.snooze.ui.framework.element.BaseElement;
 import gg.snooze.ui.framework.event.BaseEvent;
 import gg.snooze.ui.framework.layout.Layout;
-import gg.snooze.ui.framework.style.ElementStyle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,12 +56,6 @@ public abstract class BaseContainerElement<T extends BaseContainerElement<T>> ex
     public void setLayout(Layout layout) {
         this.layout = layout;
         this.updateLayout();
-    }
-
-    public void setChildrenStyle(ElementStyle style) {
-        for(BaseElement child : this.children) {
-            child.setStyle(style);
-        }
     }
 
     public void updateLayout() {

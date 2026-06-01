@@ -8,9 +8,8 @@ import java.util.List;
 
 public class GridLayout implements Layout {
 
-    private final int columns, rows;
-
-    private int parentPadding, childPadding;
+    public final int columns, rows;
+    public int parentPadding, childPadding;
 
     public GridLayout(int columns, int rows) {
         this.columns = Math.max(1, columns);
@@ -19,19 +18,19 @@ public class GridLayout implements Layout {
 
     @Override
     public void updateElements(BaseContainerElement<?> parent, List<BaseElement> children) {
-        int childWidth = parent.getWidth() / columns;
-        int childHeight = parent.getHeight() / rows;
+        int childWidth = parent.width / columns;
+        int childHeight = parent.height / rows;
 
         int column = 0;
         int row = 0;
         for(BaseElement child : children) {
-            int childX = parent.getX() + parentPadding + (childWidth * column);
-            int childY = parent.getY() + parentPadding + (childHeight * row);
+            int childX = parent.x + parentPadding + (childWidth * column);
+            int childY = parent.y + parentPadding + (childHeight * row);
 
-            child.setX(childX);
-            child.setY(childY);
-            child.setWidth(childWidth - (parentPadding * 2));
-            child.setHeight(childHeight - (parentPadding * 2));
+            child.x = childX;
+            child.y = childY;
+            child.width = childWidth - (parentPadding * 2);
+            child.height = childHeight - (parentPadding * 2);
 
             column++;
 

@@ -9,21 +9,21 @@ import java.util.List;
 
 public class VerticalLayout implements Layout {
 
-    private Alignment alignmentX = Alignment.CENTER;
-    private Alignment alignmentY = Alignment.CENTER;
-
-    private int padding;
-    private int spacing;
-    private int alignmentXOffset;
-    private int alignmentYOffset;
+    public Alignment alignmentX, alignmentY;
+    public int padding, spacing, alignmentXOffset, alignmentYOffset;
+    public boolean resizeWidth, resizeParentWidth, resizeParentHeight;
     private int totalHeight;
-
-    private boolean resizeWidth = true;
-    private boolean resizeParentWidth = true;
-    private boolean resizeParentHeight = true;
 
     public enum Alignment {
         START, CENTER, END
+    }
+
+    public VerticalLayout() {
+        this.alignmentX = Alignment.CENTER;
+        this.alignmentY = Alignment.CENTER;
+        this.resizeWidth = true;
+        this.resizeParentWidth = true;
+        this.resizeParentHeight = true;
     }
 
     @Override
@@ -35,11 +35,11 @@ public class VerticalLayout implements Layout {
 
         if(parent.isResizable()) {
             if(resizeParentHeight) {
-                parent.setHeight(totalHeight);
+                parent.height = totalHeight;
             }
 
             if(resizeParentWidth) {
-                parent.setWidth(maxChildWidth + (padding * 2));
+                parent.width = maxChildWidth + (padding * 2);
             }
         }
 
@@ -48,7 +48,7 @@ public class VerticalLayout implements Layout {
 
         // TODO: change to something less stupid
         if (parent instanceof ScrollPaneElement pane) {
-            int scroll = pane.getValue();
+            int scroll = pane.value;
 
             childY += scroll;
             startChildY += scroll;
@@ -57,11 +57,11 @@ public class VerticalLayout implements Layout {
         for (BaseElement child : children) {
             int childWidth = resolveChildWidth(parent, child);
 
-            child.setWidth(childWidth);
-            child.setX(resolveChildX(parent, child));
-            child.setY(childY);
+            child.width = childWidth;
+            child.x = resolveChildX(parent, child);
+            child.y = childY;
 
-            childY += child.getHeight() + spacing;
+            childY += child.height + spacing;
         }
 
         childY -= spacing;
@@ -71,9 +71,9 @@ public class VerticalLayout implements Layout {
     private int calculateMaxChildWidth(List<BaseElement> children) {
         int max = 0;
         for (BaseElement child : children) {
-            int w = child.getPreferredWidth() > 0
-                    ? child.getPreferredWidth()
-                    : child.getWidth();
+            int w = child.preferredWidth > 0
+                    ? child.preferredWidth
+                    : child.width;
             max = Math.max(max, w);
         }
         return max;
@@ -87,7 +87,7 @@ public class VerticalLayout implements Layout {
         int sum = 0;
 
         for (BaseElement child : children) {
-            sum += child.getHeight() + spacing;
+            sum += child.height + spacing;
         }
 
         return sum - spacing;
@@ -95,9 +95,9 @@ public class VerticalLayout implements Layout {
 
     private int resolveChildX(BaseElement parent, BaseElement child) {
         return switch(alignmentX) {
-            case START -> parent.getX() + padding;
-            case END -> parent.getX() + parent.getWidth() - child.getWidth() - padding;
-            default -> parent.getX() + (parent.getWidth() / 2) - (child.getWidth() / 2);
+            case START -> parent.x + padding;
+            case END -> parent.x + parent.width - child.width - padding;
+            default -> parent.x + (parent.width / 2) - (child.width / 2);
 
         } + alignmentXOffset;
     }
@@ -106,42 +106,22 @@ public class VerticalLayout implements Layout {
         int childrenHeight = this.calculateChildrenHeight(children);
 
         return switch(alignmentY) {
-            case Alignment.START -> parent.getY() + padding;
-            case Alignment.CENTER -> parent.getY() + (parent.getHeight() - childrenHeight) / 2;
-            case Alignment.END -> parent.getY() + parent.getHeight() - childrenHeight - padding;
+            case Alignment.START -> parent.y + padding;
+            case Alignment.CENTER -> parent.y + (parent.height - childrenHeight) / 2;
+            case Alignment.END -> parent.y + parent.height - childrenHeight - padding;
 
         } + alignmentYOffset;
     }
 
     private int resolveChildWidth(BaseElement parent, BaseElement child) {
-        int maxWidth = parent.getWidth() - (padding * 2);
-        int preferredWidth = child.getPreferredWidth();
+        int maxWidth = parent.width - (padding * 2);
+        int preferredWidth = child.preferredWidth;
 
-        return preferredWidth > 0 ? Math.min(preferredWidth, maxWidth) : child.getWidth();
+        return preferredWidth > 0 ? Math.min(preferredWidth, maxWidth) : child.width;
     }
 
-    public Alignment getAlignmentX() {
-        return alignmentX;
-    }
-
-    public Alignment getAlignmentY() {
-        return alignmentY;
-    }
-
-    public void setAlignmentX(Alignment alignmentX) {
-        this.alignmentX = alignmentX;
-    }
-
-    public void setAlignmentY(Alignment alignmentY) {
-        this.alignmentY = alignmentY;
-    }
-
-    public void setPadding(int padding) {
-        this.padding = padding;
-    }
-
-    public void setSpacing(int spacing) {
-        this.spacing = spacing;
+    public int getTotalHeight() {
+        return totalHeight;
     }
 
 }

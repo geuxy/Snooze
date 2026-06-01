@@ -1,8 +1,9 @@
-package gg.snooze.ui.framework.element.elements.settings;
+package gg.snooze.ui.framework.element.elements;
 
 import gg.snooze.setting.settings.BooleanSetting;
 import gg.snooze.ui.framework.element.BaseElement;
 import gg.snooze.ui.framework.event.events.MouseClickEvent;
+import gg.snooze.ui.framework.style.ElementStyle;
 import org.jetbrains.annotations.NotNull;
 
 public class ToggleElement extends BaseElement {
@@ -13,7 +14,7 @@ public class ToggleElement extends BaseElement {
     public interface Controller {
 
         void toggle();
-        boolean isEnabled();
+        boolean getValue();
 
         default String getName() {
             return "";
@@ -22,16 +23,8 @@ public class ToggleElement extends BaseElement {
 
     public ToggleElement(BooleanSetting setting) {
         this(new Controller() {
-
-            @Override
-            public void toggle() {
-                setting.toggle();
-            }
-
-            @Override
-            public boolean isEnabled() {
-                return setting.getValue();
-            }
+            @Override public void toggle() {setting.toggle();}
+            @Override public boolean getValue() {return setting.getValue();}
         });
     }
 
@@ -47,10 +40,12 @@ public class ToggleElement extends BaseElement {
     }
 
     @Override
-    public void render(int mouseX, int mouseY) {
-        if (this.getStyle() != null) {
-            this.getStyle().drawToggle(this, mouseX, mouseY);
-        }
+    public void render(@NotNull ElementStyle style) {
+        style.drawToggle(this);
+    }
+
+    public boolean isEnabled() {
+        return this.controller.getValue();
     }
 
 }

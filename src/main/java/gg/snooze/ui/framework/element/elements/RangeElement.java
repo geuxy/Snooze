@@ -1,8 +1,10 @@
-package gg.snooze.ui.framework.element.elements.settings;
+package gg.snooze.ui.framework.element.elements;
 
 import gg.snooze.setting.settings.RangeSetting;
 import gg.snooze.ui.framework.element.BaseElement;
 import gg.snooze.ui.framework.event.events.MouseClickEvent;
+import gg.snooze.ui.framework.style.ElementStyle;
+import org.jetbrains.annotations.NotNull;
 
 public class RangeElement extends BaseElement {
 
@@ -20,49 +22,19 @@ public class RangeElement extends BaseElement {
         double getMin();
         double getMax();
 
-        default String getText() {
-            return "";
-        }
+        default String getText() {return "";}
 
     }
 
     public RangeElement(RangeSetting setting) {
         this(new Controller() {
-
-            @Override
-            public void setMinValue(double value) {
-                setting.setMinValue(value);
-            }
-
-            @Override
-            public void setMaxValue(double value) {
-                setting.setMaxValue(value);
-            }
-
-            @Override
-            public double getMinValue() {
-                return setting.getMinValue();
-            }
-
-            @Override
-            public double getMaxValue() {
-                return setting.getMaxValue();
-            }
-
-            @Override
-            public double getMin() {
-                return setting.getMinimum();
-            }
-
-            @Override
-            public double getMax() {
-                return setting.getMaximum();
-            }
-
-            @Override
-            public String getText() {
-                return setting.name;
-            }
+            @Override public void setMinValue(double value) {setting.setMinValue(value);}
+            @Override public void setMaxValue(double value) {setting.setMaxValue(value);}
+            @Override public double getMinValue() {return setting.getMinValue();}
+            @Override public double getMaxValue() {return setting.getMaxValue();}
+            @Override public double getMin() {return setting.getMinimum();}
+            @Override public double getMax() {return setting.getMaximum();}
+            @Override public String getText() {return setting.name;}
         });
     }
 
@@ -87,17 +59,15 @@ public class RangeElement extends BaseElement {
     }
 
     @Override
-    public void render(int mouseX, int mouseY) {
+    public void render(@NotNull ElementStyle style) {
         if(this.draggingDirection == 1) {
-            this.maxValueWidth = Math.clamp(mouseX - this.x, this.minValueWidth, this.width);
+            this.maxValueWidth = Math.clamp(style.mx() - this.x, this.minValueWidth, this.width);
 
         } else if(draggingDirection == -1) {
-            this.minValueWidth = Math.clamp(mouseX - this.x, 0, this.maxValueWidth);
+            this.minValueWidth = Math.clamp(style.mx() - this.x, 0, this.maxValueWidth);
         }
 
-        if(this.getStyle() != null) {
-            this.getStyle().drawRange(this, mouseX, mouseY);
-        }
+        style.drawRange(this);
     }
 
     public void setMinValue(double value) {

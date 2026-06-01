@@ -6,7 +6,7 @@ import gg.snooze.ui.framework.event.events.ResizeSceneEvent;
 import gg.snooze.ui.framework.style.ElementStyle;
 import org.jetbrains.annotations.NotNull;
 
-public class SceneElement extends BaseContainerElement<SceneElement> {
+public class SceneElement extends BaseContainerElement {
 
     @Override
     public void render(@NotNull ElementStyle style) {

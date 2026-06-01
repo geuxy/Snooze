@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class BaseContainerElement<T extends BaseContainerElement<T>> extends BaseElement {
+public abstract class BaseContainerElement extends BaseElement {
 
     private final List<BaseElement> children = new ArrayList<>();
 
@@ -42,16 +42,14 @@ public abstract class BaseContainerElement<T extends BaseContainerElement<T>> ex
         }
     }
 
-    public T addChild(BaseElement element) {
+    public void addChild(BaseElement element) {
         this.children.add(element);
         this.updateLayout();
-        return (T) this;
     }
 
-    public T addChildren(BaseElement... elements) {
+    public void addChildren(BaseElement... elements) {
         this.children.addAll(Arrays.asList(elements));
         this.updateLayout();
-        return (T) this;
     }
 
     public void setLayout(Layout layout) {

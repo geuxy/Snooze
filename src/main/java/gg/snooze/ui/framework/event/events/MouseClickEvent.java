@@ -9,7 +9,7 @@ public class MouseClickEvent extends BaseEvent {
 
     private final int button;
     private final boolean released;
-    private final int mouseX, mouseY;
+    public final int mouseX, mouseY;
 
     public MouseClickEvent(int button, boolean released, int mouseX, int mouseY) {
         this.button = button;

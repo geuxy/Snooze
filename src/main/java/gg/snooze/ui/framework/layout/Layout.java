@@ -8,6 +8,6 @@ import java.util.List;
 @FunctionalInterface
 public interface Layout {
 
-    void updateElements(BaseContainerElement<?> parent, List<BaseElement> children);
+    void updateElements(BaseContainerElement parent, List<BaseElement> children);
 
 }

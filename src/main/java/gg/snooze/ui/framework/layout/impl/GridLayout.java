@@ -17,7 +17,7 @@ public class GridLayout implements Layout {
     }
 
     @Override
-    public void updateElements(BaseContainerElement<?> parent, List<BaseElement> children) {
+    public void updateElements(BaseContainerElement parent, List<BaseElement> children) {
         int childWidth = parent.width / columns;
         int childHeight = parent.height / rows;
 

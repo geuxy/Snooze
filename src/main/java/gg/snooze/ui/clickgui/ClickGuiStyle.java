@@ -41,7 +41,7 @@ public class ClickGuiStyle implements ElementStyle {
     }
 
     @Override
-    public void drawPanel(BaseContainerElement<?> e) {
+    public void drawPanel(BaseContainerElement e) {
         graphics.fill(e.x, e.y, e.x + e.width, e.y + e.height, PANEL_COLOR);
     }
 

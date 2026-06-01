@@ -27,7 +27,7 @@ public class VerticalLayout implements Layout {
     }
 
     @Override
-    public void updateElements(BaseContainerElement<?> parent, List<BaseElement> children) {
+    public void updateElements(BaseContainerElement parent, List<BaseElement> children) {
         int childHeight = calculateChildrenHeight(children);
         int maxChildWidth = calculateMaxChildWidth(children);
 

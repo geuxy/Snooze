@@ -6,7 +6,7 @@ import gg.snooze.ui.framework.event.events.ResizeSceneEvent;
 import gg.snooze.ui.framework.style.ElementStyle;
 import org.jetbrains.annotations.NotNull;
 
-public class ScrollPaneElement extends BaseContainerElement<ScrollPaneElement> {
+public class ScrollPaneElement extends BaseContainerElement {
 
     public int step, value, minimum, maximum;
 

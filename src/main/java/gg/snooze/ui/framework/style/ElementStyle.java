@@ -11,7 +11,7 @@ public interface ElementStyle {
 
     void update(GuiGraphicsExtractor graphics, int mouseX, int mouseY);
     void drawButton(ButtonElement e);
-    void drawPanel(BaseContainerElement<?> e);
+    void drawPanel(BaseContainerElement e);
     void drawLabel(LabelElement e);
     void drawToggle(ToggleElement e);
     void drawScene(SceneElement e);

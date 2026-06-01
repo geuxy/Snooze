@@ -5,7 +5,7 @@ import gg.snooze.ui.framework.event.events.ResizeSceneEvent;
 import gg.snooze.ui.framework.style.ElementStyle;
 import org.jetbrains.annotations.NotNull;
 
-public class PanelElement extends BaseContainerElement<PanelElement> {
+public class PanelElement extends BaseContainerElement {
 
     public PanelElement() {
         this.listen(ResizeSceneEvent.ID, _ -> this.updateLayout());

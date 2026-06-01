@@ -8,7 +8,7 @@ public class SnoozeModInitializer implements ModInitializer {
     @Override
     public void onInitialize() {
         Snooze.INSTANCE.start();
-        FabricHooks.attachHud(Snooze.IDENTIFIER);
+        FabricHooks.attachHud(Snooze.ROOT_IDENTIFIER);
     }
 
 }

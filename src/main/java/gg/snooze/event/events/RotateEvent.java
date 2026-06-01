@@ -1,14 +1,16 @@
 package gg.snooze.event.events;
 
-import gg.snooze.event.callables.BaseEvent;
+import gg.snooze.event.Event;
+import gg.snooze.event.listeners.RotateListener;
 import gg.snooze.util.Rotation;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
-public class RotateEvent extends BaseEvent {
+public record RotateEvent(Rotation rotation) implements Event<RotateListener> {
 
     public static final int ID = 2;
 
-    public final Rotation rotation;
+    @Override
+    public void invoke(RotateListener listener) {
+        listener.onRotate(this);
+    }
 
 }

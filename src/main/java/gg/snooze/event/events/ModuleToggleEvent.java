@@ -1,15 +1,16 @@
 package gg.snooze.event.events;
 
-import gg.snooze.event.callables.BaseEvent;
+import gg.snooze.event.Event;
+import gg.snooze.event.listeners.ModuleToggleListener;
 import gg.snooze.module.Module;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-@Getter @RequiredArgsConstructor
-public class ModuleToggleEvent extends BaseEvent {
+public record ModuleToggleEvent(Module module) implements Event<ModuleToggleListener> {
 
     public static final int ID = 4;
 
-    private final Module module;
+    @Override
+    public void invoke(ModuleToggleListener listener) {
+        listener.onModuleToggle(this);
+    }
 
 }

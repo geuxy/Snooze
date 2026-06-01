@@ -12,5 +12,6 @@ public @interface ModuleData {
 
     boolean enabled() default false;
     int keyCode() default 0;
+    int[] events() default {};
 
 }

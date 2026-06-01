@@ -1,100 +1,76 @@
 package gg.snooze.module;
 
 import gg.snooze.Snooze;
-import gg.snooze.event.Listener;
-import gg.snooze.event.callables.BaseEvent;
-import gg.snooze.event.events.ModuleToggleEvent;
-import gg.snooze.event.events.PreUpdateEvent;
 import gg.snooze.module.info.ModuleConfig;
 import gg.snooze.module.info.ModuleData;
 import gg.snooze.module.info.ModuleMetadata;
+import gg.snooze.setting.SettingOwner;
 import gg.snooze.util.MinecraftInstance;
 import gg.snooze.util.exceptions.ModuleToggleException;
-import gg.snooze.value.BaseValue;
-import gg.snooze.value.ValueOwner;
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
-import lombok.Getter;
-import lombok.Setter;
+import gg.snooze.setting.Setting;
 
-import java.util.LinkedHashMap;
+import java.util.Map;
 
-@Getter @Setter
-public class Module implements ValueOwner, MinecraftInstance {
+public class Module implements SettingOwner, MinecraftInstance {
 
-    private final Int2ObjectArrayMap<Listener<?>> listeners;
+    private int[] listeners;
 
-    private final ModuleMetadata metadata;
-    private final ModuleConfig config;
+    public final ModuleMetadata metadata;
+    public final ModuleConfig config;
 
     public Module() {
         ModuleData data = this.getClass().getAnnotation(ModuleData.class);
 
-        this.listeners = new Int2ObjectArrayMap<>();
+        this.listeners = data.events();
         this.metadata = new ModuleMetadata(data.name(), data.note(), data.type());
         this.config = new ModuleConfig(data.enabled(), data.keyCode());
+    }
 
-        Snooze.INSTANCE.modules.setAddingModule(this);
-        this.metadata.type().increaseModulesCount();
+    @Override
+    public void addSetting(Setting setting) {
+        this.config.settings.put(setting.name, setting);
     }
 
     public String getSuffix() {
         return null;
     }
 
-    @Override
-    public LinkedHashMap<String, BaseValue<?>> getValues() {
-        return this.config.getProperties();
+    public Map<String, Setting> getSettings() {
+        return this.config.settings;
     }
 
     public void onEnable() {}
     public void onDisable() {}
 
-    public void registerListeners() {
-        this.listeners.forEach(Snooze.INSTANCE.eventBus::subscribe);
-    }
+    public void toggle() {
+        if(this.config.enabled) {
+            this.disable();
 
-    public void unregisterListeners() {
-        this.listeners.forEach(Snooze.INSTANCE.eventBus::unsubscribe);
-    }
-
-    public void clearListeners() {
-        this.unregisterListeners();
-        this.listeners.clear();
-    }
-
-    public <T extends BaseEvent> void addListener(int id, Listener<T> listener) {
-        this.listeners.put(id, listener);
-
-        if(this.config.isEnabled()) {
-            Snooze.INSTANCE.eventBus.subscribe(PreUpdateEvent.ID, listener);
+        } else {
+            this.enable();
         }
     }
 
-    public void removeListener(int id, Listener<?> listener) {
-        Snooze.INSTANCE.eventBus.unsubscribe(PreUpdateEvent.ID, listener);
-        this.listeners.remove(id);
-    }
-
-    public void setEnabled(boolean enabled) {
-        if(enabled == this.config.isEnabled()) {
-            return;
-        }
-
+    public void enable() {
         try {
-            if (enabled) {
+            if (!this.config.enabled) {
                 this.onEnable();
-                this.config.setEnabled(true);
-                this.registerListeners();
-
-            } else {
-                this.onDisable();
-                this.unregisterListeners();
-                this.config.setEnabled(false);
+                Snooze.INSTANCE.eventBus.subscribe(this, this.listeners);
+                this.config.enabled = true;
             }
+        } catch(ModuleToggleException _) {
+        }
+    }
 
-            Snooze.INSTANCE.eventBus.postUnsafe(ModuleToggleEvent.ID, new ModuleToggleEvent(this));
-
-        } catch(ModuleToggleException _) {}
+    public void disable() {
+        try {
+            if (this.config.enabled) {
+                this.onDisable();
+                Snooze.INSTANCE.eventBus.unsubscribe(this, this.listeners);
+                this.config.enabled = false;
+            }
+        } catch(ModuleToggleException _) {
+        }
     }
 
 }

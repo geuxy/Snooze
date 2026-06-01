@@ -1,9 +1,9 @@
 package gg.snooze.module.modules;
 
-import gg.snooze.ui.clickgui.clickguis.dropdown.DropdownScreen;
 import gg.snooze.module.Module;
 import gg.snooze.module.info.ModuleData;
 import gg.snooze.module.info.ModuleType;
+import gg.snooze.ui.clickgui.ClickGuiScreen;
 import gg.snooze.util.exceptions.ModuleToggleException;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
@@ -16,18 +16,14 @@ import org.lwjgl.glfw.GLFW;
 )
 public class ClickGuiModule extends Module {
 
-    private DropdownScreen dropdown;
+    private final ClickGuiScreen screen = new ClickGuiScreen();
 
     @Override
     public void onEnable() {
         Minecraft client = Minecraft.getInstance();
 
-        if(dropdown == null) {
-            this.dropdown = new DropdownScreen();
-        }
-
         if(client.screen == null) {
-            client.setScreenAndShow(this.dropdown);
+            client.setScreen(this.screen);
         }
 
         throw new ModuleToggleException();

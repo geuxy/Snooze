@@ -2,17 +2,18 @@ package gg.snooze.manager;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public abstract class ListManager<T> implements Iterable<T> {
 
-    protected final ArrayList<T> data = new ArrayList<>();
+    protected final List<T> data = createList();
+
+    public List<T> createList() {
+        return new ArrayList<>();
+    }
 
     @Override
     public @NotNull Iterator<T> iterator() {

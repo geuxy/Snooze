@@ -1,9 +1,10 @@
 package gg.snooze.module.modules;
 
 import gg.snooze.Snooze;
-import gg.snooze.event.Listener;
 import gg.snooze.event.events.ModuleToggleEvent;
 import gg.snooze.event.events.RenderHudEvent;
+import gg.snooze.event.listeners.ModuleToggleListener;
+import gg.snooze.event.listeners.RenderHudListener;
 import gg.snooze.module.Module;
 import gg.snooze.module.info.ModuleData;
 import gg.snooze.module.info.ModuleType;
@@ -18,8 +19,13 @@ import java.util.*;
 /*
  * Example HUD for now, will add draggable system soon to replace this
  */
-@ModuleData(name = "Interface", note = "Client HUD", type = ModuleType.RENDER)
-public class InterfaceModule extends Module {
+@ModuleData(
+        name = "Interface",
+        note = "Client HUD",
+        type = ModuleType.RENDER,
+        events = {RenderHudEvent.ID, ModuleToggleEvent.ID}
+)
+public class InterfaceModule extends Module implements ModuleToggleListener, RenderHudListener {
 
     private static final int WATERMARK_COLOR = -1;
     private static final int ARRAYLIST_COLOR = -1;
@@ -30,12 +36,6 @@ public class InterfaceModule extends Module {
 
     record ModuleRenderable(Component text, int textLength) {}
 
-    public InterfaceModule() {
-        super();
-        this.addListener(RenderHudEvent.ID, onRenderHud);
-        this.addListener(ModuleToggleEvent.ID, onModuleToggle);
-    }
-
     @Override
     public String getSuffix() {
         return "Test";
@@ -45,7 +45,7 @@ public class InterfaceModule extends Module {
     public void onEnable() {
         this.enabledModules.clear();
         this.renderableCache.clear();
-        Snooze.INSTANCE.modules.findAll(m -> m.getConfig().isEnabled()).forEach(this::resolveModule);
+        Snooze.INSTANCE.modules.findAll(m -> m.config.enabled).forEach(this::resolveModule);
     }
 
     @Override
@@ -54,31 +54,34 @@ public class InterfaceModule extends Module {
         this.renderableCache.clear();
     }
 
-    private final Listener<ModuleToggleEvent> onModuleToggle = event -> {
-        this.resolveModule(event.getModule());
-    };
+    @Override
+    public void onModuleToggle(ModuleToggleEvent event) {
+        this.resolveModule(event.module());
 
-    private final Listener<RenderHudEvent> onRenderHud = event -> {
+    }
+
+    @Override
+    public void onRenderHud(RenderHudEvent event) {
         drawWatermark(event);
         drawArraylist(event);
-    };
+    }
 
     private void drawWatermark(RenderHudEvent event) {
-        event.getGraphics().text(Minecraft.getInstance().font, Snooze.NAME, 4, 4, WATERMARK_COLOR);
+        event.graphics().text(Minecraft.getInstance().font, Snooze.NAME, 4, 4, WATERMARK_COLOR);
     }
 
     private void drawArraylist(RenderHudEvent event) {
         Font font = Minecraft.getInstance().font;
-        int endX = event.getGraphics().guiWidth();
+        int endX = event.graphics().guiWidth();
 
         int moduleY = 0;
         int moduleHeight = 12;
         for(ModuleRenderable renderable : this.enabledModules) {
             int textX = endX - renderable.textLength() - 2;
 
-            event.getGraphics().fill(textX - 2, moduleY, endX, moduleY + moduleHeight, ARRAYLIST_BACKGROUND);
+            event.graphics().fill(textX - 2, moduleY, endX, moduleY + moduleHeight, ARRAYLIST_BACKGROUND);
 
-            event.getGraphics().text(
+            event.graphics().text(
                     font,
                     renderable.text(),
                     textX,
@@ -95,7 +98,7 @@ public class InterfaceModule extends Module {
                 m -> createModuleRenderable(m, Minecraft.getInstance().font)
         );
 
-        if(module.getConfig().isEnabled()) {
+        if(module.config.enabled) {
             this.enabledModules.add(renderable);
             this.enabledModules.sort(Comparator.comparingDouble(ModuleRenderable::textLength).reversed());
 
@@ -105,7 +108,7 @@ public class InterfaceModule extends Module {
     }
 
     private ModuleRenderable createModuleRenderable(Module module, Font font) {
-        Component component = Component.literal(module.getMetadata().name());
+        Component component = Component.literal(module.metadata.name());
 
         if(module.getSuffix() != null) {
             MutableComponent suffixComponent = Component.literal(" ")

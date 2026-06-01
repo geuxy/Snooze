@@ -1,9 +1,5 @@
 package gg.snooze.module.info;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter @RequiredArgsConstructor
 public enum ModuleType {
 
     COMBAT("Combat"),
@@ -12,11 +8,10 @@ public enum ModuleType {
     RENDER("Render"),
     OTHER("Other");
 
-    private final String name;
-    private int moduleCount;
+    public final String name;
 
-    public void increaseModulesCount() {
-        this.moduleCount = Math.min(this.moduleCount + 1, Integer.MAX_VALUE);
+    ModuleType(String name) {
+        this.name = name;
     }
 
 }

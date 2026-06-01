@@ -1,10 +1,6 @@
 package gg.snooze.util;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@Getter @AllArgsConstructor
-public class Rotation {
+public final class Rotation {
 
     private float x, y;
     private boolean modified;
@@ -17,6 +13,14 @@ public class Rotation {
 
     public Rotation getDelta(Rotation oldRotation) {
         return new Rotation(this.x - oldRotation.x, this.y - oldRotation.y);
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
     }
 
     public void setX(float x) {

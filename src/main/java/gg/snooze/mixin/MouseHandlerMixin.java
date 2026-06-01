@@ -1,6 +1,5 @@
 package gg.snooze.mixin;
 
-import gg.snooze.handler.RotationHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,10 +24,10 @@ public class MouseHandlerMixin {
         float newYaw = Minecraft.getInstance().player.getYRot() + xDelta;
         float newPitch = Minecraft.getInstance().player.getXRot() + yDelta;
 
-        if(RotationHandler.onTurnPlayer(newYaw, newPitch)) {
+        /*if(RotationHandler.onTurnPlayer(newYaw, newPitch)) {
             args.set(0, (double) (RotationHandler.delta.getX() / 0.15F));
             args.set(1, (double) (RotationHandler.delta.getY() / 0.15F));
-        }
+        }*/
     }
 
 }

@@ -1,9 +1,9 @@
 package gg.snooze.util;
 
-import lombok.experimental.UtilityClass;
+public final class MathUtil {
 
-@UtilityClass
-public class MathUtil {
+    private MathUtil() {
+    }
 
     public static float lerp(float start, float end, float pct) {
         return start + (end - start) * pct;

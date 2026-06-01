@@ -1,12 +1,14 @@
 package gg.snooze.event.events;
 
-import gg.snooze.event.callables.BaseEvent;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import gg.snooze.event.Event;
+import gg.snooze.event.listeners.PreUpdateListener;
 
-@Getter @RequiredArgsConstructor
-public class PreUpdateEvent extends BaseEvent {
+public record PreUpdateEvent() implements Event<PreUpdateListener> {
 
     public static final int ID = 1;
 
+    @Override
+    public void invoke(PreUpdateListener listener) {
+        listener.onPreUpdate(this);
+    }
 }

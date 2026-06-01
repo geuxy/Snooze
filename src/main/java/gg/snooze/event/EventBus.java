@@ -1,20 +1,24 @@
 package gg.snooze.event;
 
-import gg.snooze.event.callables.BaseEvent;
-
 public final class EventBus {
 
-    private final Listener<?>[][] listeners;
+    private final Object[][] subscribers;
     private final int[] listenerCounts;
 
     public EventBus(int maxEvents, int maxListeners) {
-        this.listeners = new Listener<?>[maxEvents][maxListeners];
+        this.subscribers = new Object[maxEvents][maxListeners];
         this.listenerCounts = new int[maxEvents];
     }
 
-    public <T extends BaseEvent> void subscribe(int eventId, Listener<T> listener) {
+    public void subscribe(Object listener, int... eventIds) {
+        for(int eventId : eventIds) {
+            subscribe(eventId, listener);
+        }
+    }
+
+    public void subscribe(int eventId, Object listener) {
         var count = this.listenerCounts[eventId];
-        var listeners = this.listeners[eventId];
+        var listeners = this.subscribers[eventId];
 
         if(count >= listeners.length) {
             throw new IllegalStateException("Max listeners reached for event: " + eventId);
@@ -24,14 +28,23 @@ public final class EventBus {
         this.listenerCounts[eventId]++;
     }
 
-    public <T extends BaseEvent> void unsubscribe(int eventId, Listener<T> listener) {
+    public void unsubscribe(Object listener, int... eventIds) {
+        for(int eventId : eventIds) {
+            unsubscribe(eventId, listener);
+        }
+    }
+
+    /*
+     * TODO: Improve performance
+     */
+    public void unsubscribe(int eventId, Object listener) {
         int count = this.listenerCounts[eventId];
 
         if(count == 0) {
             return;
         }
 
-        var listeners = this.listeners[eventId];
+        var listeners = this.subscribers[eventId];
 
         for (int i = count; i >= 0; i--) {
             if (listeners[i] == listener) {
@@ -45,18 +58,18 @@ public final class EventBus {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public <T extends BaseEvent> void postUnsafe(int eventId, T event) {
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public void postUnsafe(int eventId, Event event) {
         int count = this.listenerCounts[eventId];
 
         if(count == 0) {
             return;
         }
 
-        var listeners = this.listeners[eventId];
+        var listeners = this.subscribers[eventId];
 
-        for (int i = 0; i < count; i++) {
-            ((Listener<T>) listeners[i]).onEvent(event);
+        for(int i = 0; i < count; i++) {
+            event.invoke(listeners[i]);
         }
     }
 

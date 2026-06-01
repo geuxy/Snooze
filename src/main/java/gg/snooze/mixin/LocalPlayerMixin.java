@@ -2,7 +2,6 @@ package gg.snooze.mixin;
 
 import gg.snooze.Snooze;
 import gg.snooze.event.events.PreUpdateEvent;
-import gg.snooze.handler.RotationHandler;
 import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,7 +18,7 @@ public class LocalPlayerMixin {
 
     @Inject(method = "resetPos", at = @At("RETURN"))
     private void injectAfterResetPos(CallbackInfo ci) {
-        RotationHandler.initializeRotation(0.0F, 0.0F);
+        //RotationHandler.initializeRotation(0.0F, 0.0F);
     }
 
 }

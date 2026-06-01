@@ -5,11 +5,16 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 public abstract class MapManager<K, V> implements Iterable<V> {
 
-    private final LinkedHashMap<K, V> data = new LinkedHashMap<>();
+    private final Map<K, V> data = createMap();
+
+    public Map<K, V> createMap() {
+        return new LinkedHashMap<>();
+    }
 
     @Override
     public @NotNull Iterator<V> iterator() {

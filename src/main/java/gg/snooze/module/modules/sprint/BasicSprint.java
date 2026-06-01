@@ -1,25 +1,28 @@
 package gg.snooze.module.modules.sprint;
 
-import gg.snooze.event.Listener;
 import gg.snooze.event.events.PreUpdateEvent;
-import gg.snooze.module.mode.BaseSubModule;
-import gg.snooze.module.modules.SprintModule;
+import gg.snooze.event.listeners.PreUpdateListener;
+import gg.snooze.module.sub.SubModule;
+import gg.snooze.util.exceptions.ModuleToggleException;
 
-public class BasicSprint extends BaseSubModule<SprintModule> {
+public class BasicSprint implements SubModule, PreUpdateListener {
 
     @Override
-    public void onEnable() {
-        this.module.addListener(PreUpdateEvent.ID, onUpdate);
+    public int[] getEvents() {
+        return new int[] {PreUpdateEvent.ID};
     }
 
     @Override
-    public void onDisable() {
-        this.module.removeListener(PreUpdateEvent.ID, onUpdate);
-    }
-
-    private final Listener<PreUpdateEvent> onUpdate = event -> {
+    public void onPreUpdate(PreUpdateEvent event) {
         System.out.println("This is Basic mode");
-        // do basic sprint stuff
-    };
+    }
+
+    @Override
+    public void onEnable() throws ModuleToggleException {
+    }
+
+    @Override
+    public void onDisable() throws ModuleToggleException {
+    }
 
 }

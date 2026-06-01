@@ -1,18 +1,21 @@
 package gg.snooze.module.info;
 
-import gg.snooze.value.BaseValue;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import gg.snooze.setting.Setting;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
-@Getter @Setter @AllArgsConstructor
 public class ModuleConfig {
 
-    private final LinkedHashMap<String, BaseValue<?>> properties = new LinkedHashMap<>();
+    public final Map<String, Setting> settings;
 
-    private boolean enabled;
-    private int keyCode;
+    public boolean enabled;
+    public int keyCode;
+
+    public ModuleConfig(boolean enabled, int keyCode) {
+        this.settings = new LinkedHashMap<>();
+        this.enabled = enabled;
+        this.keyCode = keyCode;
+    }
 
 }

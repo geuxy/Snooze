@@ -6,7 +6,7 @@ import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Snooze {
+public final class Snooze {
 
     public static final Snooze INSTANCE = new Snooze();
 
@@ -14,7 +14,7 @@ public class Snooze {
     public static final String MOD_ID = "snooze";
     public static final double VERSION = 1.0;
 
-    public static final Identifier IDENTIFIER = Identifier.fromNamespaceAndPath(MOD_ID, "hud");
+    public static final Identifier ROOT_IDENTIFIER = Identifier.fromNamespaceAndPath(MOD_ID, "");
 
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 

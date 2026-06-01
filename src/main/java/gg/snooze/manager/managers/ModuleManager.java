@@ -1,24 +1,19 @@
 package gg.snooze.manager.managers;
 
 import gg.snooze.Snooze;
-import gg.snooze.event.Listener;
 import gg.snooze.event.events.KeyPressedEvent;
+import gg.snooze.event.listeners.KeyPressedListener;
 import gg.snooze.manager.MapManager;
 import gg.snooze.module.Module;
-import gg.snooze.module.modules.ClickGuiModule;
-import gg.snooze.module.modules.InterfaceModule;
-import gg.snooze.module.modules.SprintModule;
+import gg.snooze.module.modules.*;
 import gg.snooze.module.modules.killaura.KillAuraModule;
-import lombok.Getter;
-import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.stream.Stream;
 
-public class ModuleManager extends MapManager<Class<? extends Module>, Module> {
+public class ModuleManager extends MapManager<Class<? extends Module>, Module> implements KeyPressedListener {
 
-    @Getter @Setter
     private Module addingModule;
 
     public void init() {
@@ -34,16 +29,21 @@ public class ModuleManager extends MapManager<Class<? extends Module>, Module> {
 
         this.addingModule = null;
 
-        Snooze.INSTANCE.eventBus.subscribe(KeyPressedEvent.ID, onKeyPressed);
+        Snooze.INSTANCE.eventBus.subscribe(KeyPressedEvent.ID, this);
     }
 
-    private final Listener<KeyPressedEvent> onKeyPressed = event -> {
+    public Module getAddingModule() {
+        return addingModule;
+    }
+
+    @Override
+    public void onKeyPressed(KeyPressedEvent event) {
         for(Module module : this) {
-            if(event.getKeyCode() == module.getConfig().getKeyCode()) {
-                module.setEnabled(!module.getConfig().isEnabled());
+            if(event.keyCode() == module.config.keyCode) {
+                module.toggle();
             }
         }
-    };
+    }
 
     @Nullable
     public <T extends Module> T getModule(Class<T> clazz) {
@@ -62,7 +62,10 @@ public class ModuleManager extends MapManager<Class<? extends Module>, Module> {
 
     public void putModule(Class<? extends Module> clazz) {
         try {
-            this.put(clazz, (Module) clazz.getDeclaredConstructors()[0].newInstance());
+            Module module = (Module) clazz.getDeclaredConstructors()[0].newInstance();
+
+            this.addingModule = module;
+            this.put(clazz, module);
 
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);

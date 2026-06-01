@@ -2,6 +2,7 @@ package gg.snooze.ui;
 
 import gg.snooze.ui.clickgui.ClickGuiStyle;
 import gg.snooze.ui.framework.element.elements.containers.SceneElement;
+import gg.snooze.ui.framework.event.EventInvoker;
 import gg.snooze.ui.framework.event.events.MouseClickEvent;
 import gg.snooze.ui.framework.event.events.MouseScrollEvent;
 import gg.snooze.ui.framework.style.ElementStyle;
@@ -12,6 +13,8 @@ import net.minecraft.network.chat.Component;
 import org.jspecify.annotations.NonNull;
 
 public class BaseScreen extends Screen {
+
+    private final EventInvoker eventInvoker = new EventInvoker();
 
     public final SceneElement scene;
     public ElementStyle style;
@@ -30,7 +33,7 @@ public class BaseScreen extends Screen {
     @Override
     protected void init() {
         super.init();
-        this.scene.resizeScene(width, height);
+        this.scene.resizeScene(width, height, this.eventInvoker);
     }
 
     @Override
@@ -44,7 +47,7 @@ public class BaseScreen extends Screen {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        this.scene.resizeScene(width, height);
+        this.scene.resizeScene(width, height, this.eventInvoker);
     }
 
     @Override
@@ -60,8 +63,7 @@ public class BaseScreen extends Screen {
     @Override
     public boolean mouseScrolled(double x, double y, double scrollX, double scrollY) {
         MouseScrollEvent mouseScrollEvent = new MouseScrollEvent((int) Math.signum(scrollY), mouseX, mouseY);
-
-        this.scene.invoke(MouseScrollEvent.ID, mouseScrollEvent);
+        this.scene.invoke(MouseScrollEvent.ID, mouseScrollEvent, this.eventInvoker);
 
         return mouseScrollEvent.isConsumed();
     }
@@ -74,7 +76,7 @@ public class BaseScreen extends Screen {
                 mouseY
         );
 
-        this.scene.invoke(MouseClickEvent.ID, mouseClickEvent);
+        this.scene.invoke(MouseClickEvent.ID, mouseClickEvent, this.eventInvoker);
 
         return mouseClickEvent.isConsumed();
     }

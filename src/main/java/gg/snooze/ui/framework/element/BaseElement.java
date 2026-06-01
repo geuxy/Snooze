@@ -1,26 +1,25 @@
 package gg.snooze.ui.framework.element;
 
 import gg.snooze.ui.framework.event.BaseEvent;
+import gg.snooze.ui.framework.event.EventInvoker;
 import gg.snooze.ui.framework.event.Listener;
-import gg.snooze.ui.framework.event.system.ListenerSystem;
-import gg.snooze.ui.framework.event.system.ListenerSystemImpl;
 import gg.snooze.ui.framework.style.ElementStyle;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class BaseElement {
 
-    private final ListenerSystem listenerSystem = new ListenerSystemImpl(8, 32);
+    private final Object[] listeners = new Object[4];
 
     public int x, y, width, height, preferredWidth, preferredHeight;
 
     public abstract void render(@NotNull ElementStyle style);
 
-    public <T extends BaseEvent> void invoke(int eventId, T event) {
-        this.listenerSystem.invoke(eventId, event);
+    public void invoke(int eventId, BaseEvent event, EventInvoker eventInvoker) {
+        eventInvoker.invoke(eventId, event, this.listeners);
     }
 
-    public <T extends BaseEvent> void listen(int eventId, Listener<T> listener) {
-        this.listenerSystem.addListener(eventId, listener);
+    public void listen(int eventId, Listener listener) {
+        this.listeners[eventId] = listener;
     }
 
     public void setSize(int w, int h) {

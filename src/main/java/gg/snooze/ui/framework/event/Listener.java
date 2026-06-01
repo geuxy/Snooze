@@ -1,8 +1,8 @@
 package gg.snooze.ui.framework.event;
 
 @FunctionalInterface
-public interface Listener<T> {
+public interface Listener {
 
-    void onEvent(T event);
+    void onEvent(BaseEvent event);
 
 }

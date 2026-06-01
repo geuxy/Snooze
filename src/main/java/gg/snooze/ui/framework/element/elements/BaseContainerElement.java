@@ -2,6 +2,7 @@ package gg.snooze.ui.framework.element.elements;
 
 import gg.snooze.ui.framework.element.BaseElement;
 import gg.snooze.ui.framework.event.BaseEvent;
+import gg.snooze.ui.framework.event.EventInvoker;
 import gg.snooze.ui.framework.layout.Layout;
 
 import java.util.ArrayList;
@@ -15,12 +16,12 @@ public abstract class BaseContainerElement<T extends BaseContainerElement<T>> ex
     private Layout layout;
 
     @Override
-    public <E extends BaseEvent> void invoke(int eventId, E event) {
+    public void invoke(int eventId, BaseEvent event, EventInvoker eventInvoker) {
         if(!event.canInvoke(this)) {
             return;
         }
 
-        super.invoke(eventId, event);
+        super.invoke(eventId, event, eventInvoker);
 
         if(event.isConsumed()) {
             return;
@@ -33,7 +34,7 @@ public abstract class BaseContainerElement<T extends BaseContainerElement<T>> ex
                 continue;
             }
 
-            child.invoke(eventId, event);
+            child.invoke(eventId, event, eventInvoker);
 
             if(event.isConsumed()) {
                 break;

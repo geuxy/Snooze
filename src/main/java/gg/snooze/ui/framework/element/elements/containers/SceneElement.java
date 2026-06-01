@@ -1,6 +1,7 @@
 package gg.snooze.ui.framework.element.elements.containers;
 
 import gg.snooze.ui.framework.element.elements.BaseContainerElement;
+import gg.snooze.ui.framework.event.EventInvoker;
 import gg.snooze.ui.framework.event.events.ResizeSceneEvent;
 import gg.snooze.ui.framework.style.ElementStyle;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,7 @@ public class SceneElement extends BaseContainerElement<SceneElement> {
         return false;
     }
 
-    public void resizeScene(double width, double height) {
+    public void resizeScene(double width, double height, EventInvoker eventInvoker) {
         if (width <= 0 || height <= 0) {
             return;
         }
@@ -35,7 +36,7 @@ public class SceneElement extends BaseContainerElement<SceneElement> {
 
         this.updateLayout();
 
-        this.invoke(ResizeSceneEvent.ID, new ResizeSceneEvent((int) width, (int) height));
+        this.invoke(ResizeSceneEvent.ID, new ResizeSceneEvent((int) width, (int) height), eventInvoker);
     }
 
 }

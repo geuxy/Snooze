@@ -29,12 +29,12 @@ public class SprintModule extends Module {
 
     @Override
     public void onEnable() {
-        this.mode.getValue().onEnable();
+        this.mode.getValue().enable();
     }
 
     @Override
     public void onDisable() {
-        this.mode.getValue().onDisable();
+        this.mode.getValue().disable();
     }
 
 }

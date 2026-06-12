@@ -1,6 +1,7 @@
 package gg.snooze.module;
 
 import gg.snooze.Snooze;
+import gg.snooze.event.events.ModuleToggleEvent;
 import gg.snooze.module.info.ModuleConfig;
 import gg.snooze.module.info.ModuleData;
 import gg.snooze.module.info.ModuleMetadata;
@@ -58,6 +59,8 @@ public class Module implements SettingOwner, MinecraftInstance {
                 Snooze.INSTANCE.eventBus.subscribe(this, this.listeners);
                 this.config.enabled = true;
             }
+            Snooze.INSTANCE.eventBus.postUnsafe(ModuleToggleEvent.ID, new ModuleToggleEvent(this));
+
         } catch(ModuleToggleException _) {
         }
     }
@@ -68,6 +71,8 @@ public class Module implements SettingOwner, MinecraftInstance {
                 this.onDisable();
                 Snooze.INSTANCE.eventBus.unsubscribe(this, this.listeners);
                 this.config.enabled = false;
+
+                Snooze.INSTANCE.eventBus.postUnsafe(ModuleToggleEvent.ID, new ModuleToggleEvent(this));
             }
         } catch(ModuleToggleException _) {
         }

@@ -17,11 +17,11 @@ public abstract class BaseOptionSetting<T, E> extends Setting {
 
     public static BiConsumer<Option<SubModule>, Option<SubModule>> subModuleAction(Module module) {
         return (o, n) -> {
-            o.getValue().onDisable();
+            o.getValue().disable();
             Snooze.INSTANCE.eventBus.unsubscribe(o, o.getValue().getEvents());
 
             if(module.config.enabled) {
-                n.getValue().onEnable();
+                n.getValue().enable();
                 Snooze.INSTANCE.eventBus.subscribe(n, n.getValue().getEvents());
             }
         };

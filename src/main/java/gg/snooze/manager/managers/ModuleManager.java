@@ -5,11 +5,14 @@ import gg.snooze.event.events.KeyPressedEvent;
 import gg.snooze.event.listeners.KeyPressedListener;
 import gg.snooze.manager.MapManager;
 import gg.snooze.module.Module;
+import gg.snooze.module.info.ModuleType;
 import gg.snooze.module.modules.*;
 import gg.snooze.module.modules.killaura.KillAuraModule;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class ModuleManager extends MapManager<Class<? extends Module>, Module> implements KeyPressedListener {
@@ -53,6 +56,20 @@ public class ModuleManager extends MapManager<Class<? extends Module>, Module> i
             }
         }
         return null;
+    }
+
+    public List<Module> getModules(ModuleType type) {
+        List<Module> modules = new ArrayList<>();
+
+        for(Module module : this) {
+            if(module.metadata.type() != type) {
+                continue;
+            }
+
+            modules.add(module);
+        }
+
+        return modules;
     }
 
     @SafeVarargs

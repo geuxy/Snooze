@@ -57,7 +57,6 @@ public class InterfaceModule extends Module implements ModuleToggleListener, Ren
     @Override
     public void onModuleToggle(ModuleToggleEvent event) {
         this.resolveModule(event.module());
-
     }
 
     @Override

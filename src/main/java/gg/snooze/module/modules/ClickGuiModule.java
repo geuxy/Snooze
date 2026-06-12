@@ -11,18 +11,22 @@ import org.lwjgl.glfw.GLFW;
 @ModuleData(
         name = "Click Gui",
         note = "A fancy user interface to customize modules",
-        type = ModuleType.RENDER,
+        type = ModuleType.MOVEMENT,
         keyCode = GLFW.GLFW_KEY_RIGHT_SHIFT
 )
 public class ClickGuiModule extends Module {
 
-    private final ClickGuiScreen screen = new ClickGuiScreen();
+    private ClickGuiScreen screen;
 
     @Override
     public void onEnable() {
         Minecraft client = Minecraft.getInstance();
 
         if(client.screen == null) {
+            if(screen == null) {
+                this.screen = new ClickGuiScreen();
+            }
+
             client.setScreen(this.screen);
         }
 

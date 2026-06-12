@@ -1,33 +1,66 @@
 package gg.snooze.ui.clickgui;
 
+import gg.snooze.module.info.ModuleType;
 import gg.snooze.ui.BaseScreen;
-import gg.snooze.ui.framework.element.elements.ButtonElement;
-import gg.snooze.ui.framework.element.elements.containers.PanelElement;
-import gg.snooze.ui.framework.element.elements.containers.SceneElement;
-import gg.snooze.ui.framework.layout.impl.VerticalLayout;
+import gg.snooze.ui.clickgui.style.ClickStyle;
+import gg.snooze.ui.clickgui.style.ClickStyleImpl;
+import gg.snooze.ui.core.drag.DragHandler;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.input.MouseButtonEvent;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 public class ClickGuiScreen extends BaseScreen {
 
+    private static final int FRAME_WIDTH = 110;
+    private static final int FRAME_HEIGHT = 16;
+    private static final int FRAME_OFFSET = 4;
+    private static final int MODULE_HEIGHT = 16;
+
+    private final List<ClickGuiFrame> frames;
+
+    private final DragHandler dragHandler;
+    private final ClickStyle style;
+
     public ClickGuiScreen() {
-        var scene = new SceneElement();
-        var pane = new PanelElement();
-        var child = new ButtonElement();
+        super();
+        this.frames = Stream.of(ModuleType.values())
+                .map(this::createFrame)
+                .toList();
+        this.dragHandler = new DragHandler();
+        this.style = new ClickStyleImpl();
+    }
 
-        var paneLayout = new VerticalLayout();
-        paneLayout.padding = 10;
+    @Override
+    public void onClose() {
+        super.onClose();
+        this.dragHandler.release(0);
+    }
 
-        scene.setLayout(new VerticalLayout());
-        pane.setLayout(paneLayout);
+    @Override
+    public void render(GuiGraphicsExtractor graphics) {
+        this.style.setGraphics(graphics);
+        this.frames.forEach(f -> f.render(style));
+    }
 
-        pane.setSize(120, 60);
-        child.setSize(100, 20);
-        pane.setPreferredSize(120, 60);
-        child.setPreferredSize(100, 20);
+    @Override
+    public boolean click(MouseButtonEvent event) {
+        return dragHandler.click(this.frames, event)
+                || this.frames.stream().anyMatch(f -> f.click(event));
+    }
 
-        pane.addChild(child);
-        scene.addChild(pane);
+    @Override
+    public boolean release(MouseButtonEvent event) {
+        return dragHandler.click(this.frames, event)
+                || this.frames.stream().anyMatch(f -> f.release(event));
+    }
 
-        super(scene, new ClickGuiStyle());
+    private ClickGuiFrame createFrame(ModuleType type) {
+        var frame = new ClickGuiFrame(type, MODULE_HEIGHT);
+        frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        frame.setPosition(FRAME_OFFSET + (type.ordinal() * (frame.width + FRAME_HEIGHT)), FRAME_HEIGHT);
+        return frame;
     }
 
 }
